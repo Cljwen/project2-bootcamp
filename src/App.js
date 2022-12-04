@@ -1,14 +1,18 @@
 import React from "react";
 import "./App.css";
-import { AddPetForm } from "./forms/AddPetForm";
-import { ProfileForm } from "./forms/ProfileForm";
-import { RequestForm } from "./forms/RequestForm";
-import { SignUpForm } from "./forms/SignUpForm";
+import { AddPetForm } from "./forms/4.AddPetForm";
+import { ProfileForm } from "./forms/3.ProfileForm";
+import { RequestForm } from "./forms/5.RequestForm";
+import { SignUpForm } from "./forms/1.SignUpForm";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { Link, Routes, Route, BrowserRouter } from "react-router-dom";
-// import RequestPage from "./pages/RequestPage";
+import { ResponsiveAppBar } from "./components/NavBar";
+import { ProfilePage } from "./pages/7.ProfilePage";
+import { RequestPage } from "./pages/4.RequestPage";
+import { Walker } from "./pages/5.WalkerPage";
+// import { RequestListing } from "./pages/RequestPage";
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
@@ -40,36 +44,32 @@ function App() {
     <div className="App">
       <header className="App-header">
         <BrowserRouter>
-          {userLoggedIn ? (
-            <div>
-              <Link to="/Request">Request Form</Link>
-              <br />
-              <Link to="/AddPetForm">Pet Form</Link>
-              <br />
-              <Link to="/">Sign up Form</Link>
-            </div>
-          ) : null}
+          {userLoggedIn ? <ResponsiveAppBar /> : null}
           <Routes>
             <Route
-              path="/Request"
+              path="/RequestForm"
               element={<RequestForm user={userLoggedIn} />}
+            />
+            <Route
+              path="/Request"
+              element={<RequestPage user={userLoggedIn} />}
             />
             <Route
               path="/AddPetForm"
               element={<AddPetForm user={userLoggedIn} />}
             />
-            <Route path="/" element={<SignUpForm />} />
-            {/* <Route path="/Requests" element={<RequestPage />} /> */}
+            <Route path="/SignUp" element={<SignUpForm />} />
+            <Route
+              path="/ProfileForm"
+              element={<ProfileForm user={userLoggedIn} />}
+            />
+            <Route
+              path="/Profile"
+              element={<ProfilePage user={userLoggedIn} />}
+            />
+            <Route path="/Walker" element={<Walker user={userLoggedIn} />} />
           </Routes>
         </BrowserRouter>
-        <br />
-        <br />
-        <br />
-        <br />
-
-        {/* <ProfileForm /> */}
-
-        <p></p>
       </header>
     </div>
   );

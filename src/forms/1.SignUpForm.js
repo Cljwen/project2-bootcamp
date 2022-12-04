@@ -4,7 +4,6 @@ import { auth, database } from "../firebase";
 import { ref, set } from "firebase/database";
 import { USERS } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 export function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +11,6 @@ export function SignUpForm() {
 
   const [userLoggedIn, setUserLoggedIn] = useState(null);
   const [isFetchingUser, setIsFetchingUser] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setIsFetchingUser(true);

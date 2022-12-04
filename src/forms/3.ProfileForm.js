@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { regionList } from "./lists/region";
+import { regionList } from "./lists/user/region";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import { ref, set } from "firebase/database";
@@ -19,6 +19,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { storage } from "../firebase";
+import { Propane } from "@mui/icons-material";
 
 export function ProfileForm() {
   const [name, setName] = useState("");
@@ -51,6 +52,16 @@ export function ProfileForm() {
           walker: walker,
           region: region,
           displayPic: downloadUrl,
+          description: description,
+        });
+
+        const walkerListRef = ref(database, `WALKERS/${walker}`);
+        set(walkerListRef, {
+          userID: auth.currentUser.uid,
+          name: name,
+          description: description,
+          displayPic: downloadUrl,
+          region: region,
         });
       });
     });
@@ -91,8 +102,8 @@ export function ProfileForm() {
           value={walker}
           onChange={(e) => setWalkerStatus(e.target.value)}
         >
-          <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-          <FormControlLabel value="no" control={<Radio />} label="No" />
+          <FormControlLabel value="YES" control={<Radio />} label="Yes" />
+          <FormControlLabel value="NO" control={<Radio />} label="No" />
         </RadioGroup>
         <br />
         <TextField

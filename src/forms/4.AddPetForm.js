@@ -18,9 +18,9 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { storage } from "../firebase";
-import { sizeList } from "./lists/size";
-import { ageList } from "./lists/age";
-import { breedList } from "./lists/breed";
+import { sizeList } from "./lists/pet/size";
+import { ageList } from "./lists/pet/age";
+import { breedList } from "./lists/pet/breed";
 import { useNavigate } from "react-router-dom";
 
 export function AddPetForm(props) {
