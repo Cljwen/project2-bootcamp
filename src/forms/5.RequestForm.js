@@ -78,7 +78,7 @@ export function RequestForm(props) {
       newTimeSlotArray = requestedInfoFromFireBase.timeslot;
       // if user has selected a time
       if (selectedTime) {
-        newTimeSlotArray.push(selectedTime);
+        newTimeSlotArray.push({ timeslot: selectedTime, status: "Pending" });
         set(requestFolder, {
           timeslot: [...newTimeSlotArray],
           pet: selectedPet,
@@ -94,12 +94,12 @@ export function RequestForm(props) {
     //there are no existing requests from this pet
     else {
       set(requestFolder, {
-        timeslot: [selectedTime],
+        timeslot: [{ timeslot: selectedTime, status: "Pending" }],
         pet: selectedPet,
         selectedPetInfo: selectedPetInfo,
       });
       set(userRequestRef, {
-        timeslot: [selectedTime],
+        timeslot: [{ timeslot: selectedTime, status: "Pending" }],
         pet: selectedPet,
         selectedPetInfo: selectedPetInfo,
       });

@@ -42,35 +42,35 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <BrowserRouter>
-          {userLoggedIn ? <ResponsiveAppBar /> : null}
-          <Routes>
-            <Route
-              path="/RequestForm"
-              element={<RequestForm user={userLoggedIn} />}
-            />
-            <Route
-              path="/Request"
-              element={<RequestPage user={userLoggedIn} />}
-            />
-            <Route
-              path="/AddPetForm"
-              element={<AddPetForm user={userLoggedIn} />}
-            />
-            <Route path="/SignUp" element={<SignUpForm />} />
-            <Route
-              path="/ProfileForm"
-              element={<ProfileForm user={userLoggedIn} />}
-            />
-            <Route
-              path="/Profile"
-              element={<ProfilePage user={userLoggedIn} />}
-            />
-            <Route path="/Walker" element={<Walker user={userLoggedIn} />} />
-          </Routes>
-        </BrowserRouter>
-      </header>
+      {/* <header className="App-header"> */}
+      <BrowserRouter>
+        {userLoggedIn ? <ResponsiveAppBar /> : null}
+        <Routes>
+          <Route
+            path="/RequestForm"
+            element={<RequestForm user={userLoggedIn} />}
+          />
+          <Route
+            path="/Request"
+            element={<RequestPage user={userLoggedIn} />}
+          />
+          <Route
+            path="/AddPetForm"
+            element={<AddPetForm user={userLoggedIn} />}
+          />
+          <Route path="/SignUp" element={<SignUpForm />} />
+          <Route
+            path="/ProfileForm"
+            element={<ProfileForm user={userLoggedIn} />}
+          />
+          <Route
+            path="/Profile"
+            element={<ProfilePage user={userLoggedIn} />}
+          />
+          <Route path="/Walker" element={<Walker user={userLoggedIn} />} />
+        </Routes>
+      </BrowserRouter>
+      {/* </header> */}
     </div>
   );
 }

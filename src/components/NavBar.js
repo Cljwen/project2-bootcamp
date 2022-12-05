@@ -143,7 +143,7 @@ export function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            NAW
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Link to="/Request" style={{ textDecoration: "none" }}>
@@ -154,13 +154,14 @@ export function ResponsiveAppBar() {
                 Walking Requests
               </Button>
             </Link>
-
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Find a Walker
-            </Button>
+            <Link to="/Walker" style={{ textDecoration: "none" }}>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Find a Walker
+              </Button>
+            </Link>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
@@ -221,10 +222,10 @@ export function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
+            {/* <Tooltip title="Open settings"> */}
+            {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}> */}
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            {/* </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
@@ -241,13 +242,13 @@ export function ResponsiveAppBar() {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
-            >
-              {/* {settings.map((setting) => (
+            > */}
+            {/* {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))} */}
-            </Menu>
+            {/* </Menu> */}
           </Box>
         </Toolbar>
       </Container>

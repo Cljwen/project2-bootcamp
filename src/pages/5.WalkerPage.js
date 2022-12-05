@@ -1,26 +1,62 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { database } from "../firebase";
-import { ref, get } from "./firebase";
+import {
+  equalTo,
+  get,
+  onChildAdded,
+  orderByChild,
+  query,
+  ref,
+  set,
+} from "firebase/database";
+import { Card, Button } from "@mui/material";
 
 export function Walker(props) {
   const [walkerList, setWalkerList] = useState();
 
   useEffect(() => {
-    let arrayOfEntries = [];
-    if (props.user) {
-      const allRequests = ref(database, `WALKERS/YES`);
+    const arrayOfEntries = [];
+    //define the query (remember to change rules)
+    const walkerQuery = query(
+      ref(database, "USERS"),
+      orderByChild("walker"),
+      equalTo(true)
+    );
 
-      get(allRequests).then((snapshot) => {
-        console.log(snapshot.val());
-        if (snapshot.val()) {
-          Object.keys(snapshot.val()).forEach(function (key) {
-            arrayOfEntries.push(snapshot.val()[key].pet);
-          });
-          setRequestsList(arrayOfEntries);
-        } else console.log("no requests exist");
+    //get info from the query
+    get(walkerQuery).then((snapshot) => {
+      Object.keys(snapshot.val()).forEach(function (key) {
+        arrayOfEntries.push(snapshot.val()[key].PROFILE);
       });
-    }
+      console.log(arrayOfEntries);
+      setWalkerList(arrayOfEntries);
+    });
   }, [props.user]);
-  return <div></div>;
+
+  return (
+    <div>
+      {walkerList && walkerList.length > 0 && (
+        <div>
+          {walkerList.map((walker, index) => {
+            return (
+              <div key={index}>
+                <Card>
+                  Name: {walker.name}
+                  <br />
+                  Description: {walker.description}
+                  <br />
+                  Region: {walker.region}
+                  <br />
+                  <Button>Contact</Button>
+                  <br />
+                </Card>
+                <br />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }

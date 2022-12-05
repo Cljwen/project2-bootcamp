@@ -19,7 +19,6 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { storage } from "../firebase";
-import { Propane } from "@mui/icons-material";
 
 export function ProfileForm() {
   const [name, setName] = useState("");
@@ -49,20 +48,13 @@ export function ProfileForm() {
         const postListRef = ref(database, `${dbPathway}/PROFILE`);
         set(postListRef, {
           name: name,
-          walker: walker,
           region: region,
           displayPic: downloadUrl,
           description: description,
         });
 
-        const walkerListRef = ref(database, `WALKERS/${walker}`);
-        set(walkerListRef, {
-          userID: auth.currentUser.uid,
-          name: name,
-          description: description,
-          displayPic: downloadUrl,
-          region: region,
-        });
+        const walkerListRef = ref(database, `${dbPathway}/walker`);
+        set(walkerListRef, walker);
       });
     });
   }
@@ -100,10 +92,12 @@ export function ProfileForm() {
           aria-labelledby="demo-radio-buttons-group-label"
           name="radio-buttons-group"
           value={walker}
-          onChange={(e) => setWalkerStatus(e.target.value)}
+          onChange={(e) =>
+            setWalkerStatus(e.target.value === "true" ? true : false)
+          }
         >
-          <FormControlLabel value="YES" control={<Radio />} label="Yes" />
-          <FormControlLabel value="NO" control={<Radio />} label="No" />
+          <FormControlLabel value="true" control={<Radio />} label="Yes" />
+          <FormControlLabel value="false" control={<Radio />} label="No" />
         </RadioGroup>
         <br />
         <TextField
