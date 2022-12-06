@@ -9,9 +9,12 @@ import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useEffect, useState } from "react";
+import { ref, get } from "firebase/database";
+import { USERS } from "../firebase";
+import { database } from "../firebase";
 
 export function NavBar() {
   return (
@@ -29,7 +32,7 @@ export function NavBar() {
   );
 }
 
-export function ResponsiveAppBar() {
+export function ResponsiveAppBar(props) {
   // const pages = ["Requests", "Walkers", "Schedule", "Profile", "Support"];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -49,6 +52,18 @@ export function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const [displayPicLink, setDisplayPicLink] = useState(null);
+
+  useEffect(() => {
+    if (props.user) {
+      const profilePathway = `${USERS}/${props.user.uid}/PROFILE`;
+      const profileRef = ref(database, profilePathway);
+
+      get(profileRef).then((snapshot) => {
+        setDisplayPicLink(snapshot.val().displayPic);
+      });
+    }
+  }, [props.user]);
 
   return (
     <AppBar position="static">
@@ -69,7 +84,7 @@ export function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            NAW
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -162,12 +177,14 @@ export function ResponsiveAppBar() {
                 Find a Walker
               </Button>
             </Link>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              Schedule
-            </Button>
+            <Link to="/Schedule" style={{ textDecoration: "none" }}>
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Schedule
+              </Button>
+            </Link>
             <Link to="/Profile" style={{ textDecoration: "none" }}>
               <Button
                 onClick={handleCloseNavMenu}
@@ -224,7 +241,7 @@ export function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             {/* <Tooltip title="Open settings"> */}
             {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}> */}
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Remy Sharp" src={`${displayPicLink}`} />
             {/* </IconButton>
             </Tooltip>
             <Menu

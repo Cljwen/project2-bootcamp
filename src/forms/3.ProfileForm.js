@@ -27,6 +27,7 @@ export function ProfileForm() {
   const [region, setRegion] = useState("");
   const [walker, setWalkerStatus] = useState("");
   const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
 
   function handleFileChange(e) {
     setDisplayPicValue(e.target.value);
@@ -51,6 +52,7 @@ export function ProfileForm() {
           region: region,
           displayPic: downloadUrl,
           description: description,
+          address: address,
         });
 
         const walkerListRef = ref(database, `${dbPathway}/walker`);
@@ -127,6 +129,17 @@ export function ProfileForm() {
             ))}
           </Select>
         </FormControl>
+        <br />
+        <br />
+        <TextField
+          id="outlined-multiline-static"
+          label="Address"
+          multiline
+          rows={4}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <br />
         <Button
           variant="contained"
           value="submit"

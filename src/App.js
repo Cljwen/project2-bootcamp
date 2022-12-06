@@ -12,7 +12,7 @@ import { ResponsiveAppBar } from "./components/NavBar";
 import { ProfilePage } from "./pages/7.ProfilePage";
 import { RequestPage } from "./pages/4.RequestPage";
 import { Walker } from "./pages/5.WalkerPage";
-// import { RequestListing } from "./pages/RequestPage";
+import { Schedule } from "./pages/6.Schedule";
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
@@ -44,7 +44,7 @@ function App() {
     <div className="App">
       {/* <header className="App-header"> */}
       <BrowserRouter>
-        {userLoggedIn ? <ResponsiveAppBar /> : null}
+        {userLoggedIn ? <ResponsiveAppBar user={userLoggedIn} /> : null}
         <Routes>
           <Route
             path="/RequestForm"
@@ -68,9 +68,9 @@ function App() {
             element={<ProfilePage user={userLoggedIn} />}
           />
           <Route path="/Walker" element={<Walker user={userLoggedIn} />} />
+          <Route path="/Schedule" element={<Schedule user={userLoggedIn} />} />
         </Routes>
       </BrowserRouter>
-      {/* </header> */}
     </div>
   );
 }
