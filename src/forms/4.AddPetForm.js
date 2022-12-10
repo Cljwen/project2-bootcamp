@@ -21,7 +21,7 @@ import { storage } from "../firebase";
 import { sizeList } from "./lists/pet/size";
 import { ageList } from "./lists/pet/age";
 import { breedList } from "./lists/pet/breed";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export function AddPetForm(props) {
   const [petName, setPetName] = useState("");
@@ -33,12 +33,12 @@ export function AddPetForm(props) {
   const [gender, setGender] = useState("");
   const [petDescription, setPetDescription] = useState("");
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!props.user) {
-      navigate("/");
-    }
-  }, [props.user]);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (!props.user) {
+  //     navigate("/");
+  //   }
+  // }, [props.user]);
 
   function handleFileChange(e) {
     setPetDisplayPicValue(e.target.value);
@@ -139,8 +139,8 @@ export function AddPetForm(props) {
           value={gender}
           onChange={(e) => setGender(e.target.value)}
         >
-          <FormControlLabel value="female" control={<Radio />} label="Female" />
-          <FormControlLabel value="male" control={<Radio />} label="Male" />
+          <FormControlLabel value="Female" control={<Radio />} label="Female" />
+          <FormControlLabel value="Male" control={<Radio />} label="Male" />
         </RadioGroup>
         Pet Image:
         <Button variant="contained" component="label">

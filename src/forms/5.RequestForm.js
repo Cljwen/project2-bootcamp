@@ -10,11 +10,13 @@ import { USERS, database, auth, REQUEST_FOLDER_NAME } from "../firebase";
 import { onValue } from "firebase/database";
 import { timeslotList } from "./lists/pet/timeslots";
 // import BasicDatePicker from "../components/CalendarPicker";
+import { GlobalTheme } from "../pages/styling/Theme";
 
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { ThemeProvider } from "@mui/system";
 
 export function RequestForm(props) {
   const [petList, setPetList] = useState([]);
@@ -24,6 +26,13 @@ export function RequestForm(props) {
   const [selectedPetInfo, setSelectedPetInfo] = useState();
   const [date, setDate] = useState(null);
   const [ownerInfo, setOwnerInfo] = useState(null);
+
+  const options = {
+    // weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
 
   // const [selectedPetTimeSlotArray, setSelectedPetTimeSlotArray] = useState([]);
 
@@ -110,8 +119,8 @@ export function RequestForm(props) {
       if (selectedTime && ownerInfo) {
         console.log(date.$d);
         newTimeSlotArray.push({
-          date: date.$d.toLocaleDateString(),
-          dateObject: date.$d,
+          date: date.$d.toLocaleDateString("en-US", options),
+          dateObject: date.$d.toLocaleDateString(),
           timeslot: selectedTime,
           status: "Pending",
         });
@@ -132,12 +141,12 @@ export function RequestForm(props) {
     }
     //there are no existing requests from this pet
     else {
-      set(ownerInfoFolder, ownerInfo);
+      set(ownerInfoFolder, ownerInfo[0]);
       set(requestFolder, {
         timeslot: [
           {
-            date: date.$d.toLocaleDateString(),
-            dateObject: date.$d,
+            date: date.$d.toLocaleDateString("en-US", options),
+            dateObject: date.$d.toLocaleDateString(),
             timeslot: selectedTime,
             status: "Pending",
           },
@@ -148,8 +157,8 @@ export function RequestForm(props) {
       set(userRequestRef, {
         timeslot: [
           {
-            date: date.$d.toLocaleDateString(),
-            dateObject: date.$d,
+            date: date.$d.toLocaleDateString("en-US", options),
+            dateObject: date.$d.toLocaleDateString(),
             timeslot: selectedTime,
             status: "Pending",
           },
@@ -158,67 +167,73 @@ export function RequestForm(props) {
         selectedPetInfo: selectedPetInfo,
       });
     }
+
+    clearFormEntries();
+  }
+
+  function clearFormEntries() {
+    setSelectedPet("");
+    setSelectedTime("");
+    setDate(null);
   }
 
   return (
     <div>
-      <br />
-      <br />
-      <br />
-      <FormControl fullWidth>
-        <InputLabel id="pet">Pet</InputLabel>
-        <Select
-          labelId="pet"
-          id="pet"
-          label="pet"
-          value={selectedPet}
-          onChange={(e) => setSelectedPet(e.target.value)}
+      <ThemeProvider theme={GlobalTheme}>
+        <h4> Post your walking request here 🐶</h4>
+        <FormControl
+          color="primary"
+          variant="filled"
+          fullWidth
+          sx={{ margin: "20px 0px" }}
         >
-          {petList.map((pet) => (
-            <MenuItem key={pet.key} value={pet.key}>
-              {pet.key}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <br />
-      <br />
-      <br />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Basic example"
-          value={date}
-          onChange={(newDate) => {
-            setDate(newDate);
-            console.log(newDate.$d);
-            console.log(newDate.$d.toLocaleDateString());
-          }}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-      <br />
-      <br />
-      <br />
-      <FormControl fullWidth>
-        <InputLabel id="time">Time</InputLabel>
-        <Select
-          labelId="time"
-          id="time"
-          label="time"
-          value={selectedTime}
-          onChange={(e) => setSelectedTime(e.target.value)}
-        >
-          {timeslotList.map((timeslot) => (
-            <MenuItem key={timeslot} value={timeslot}>
-              {timeslot}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <br />
-      <Button variant="contained" onClick={(e) => handleSubmit(e)}>
-        Enter Request
-      </Button>
+          <InputLabel id="pet">Pet</InputLabel>
+          <Select
+            labelId="pet"
+            id="pet"
+            label="pet"
+            value={selectedPet}
+            onChange={(e) => setSelectedPet(e.target.value)}
+          >
+            {petList.map((pet) => (
+              <MenuItem key={pet.key} value={pet.key}>
+                {pet.key}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            color="primary"
+            label="Pick a date"
+            value={date}
+            onChange={(newDate) => {
+              setDate(newDate);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        <FormControl color="primary" fullWidth sx={{ margin: "20px 0px" }}>
+          <InputLabel id="time">Time</InputLabel>
+          <Select
+            labelId="time"
+            id="time"
+            label="time"
+            value={selectedTime}
+            onChange={(e) => setSelectedTime(e.target.value)}
+          >
+            {timeslotList.map((timeslot) => (
+              <MenuItem key={timeslot} value={timeslot}>
+                {timeslot}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <br />
+        <Button variant="contained" onClick={(e) => handleSubmit(e)}>
+          Enter Request
+        </Button>
+      </ThemeProvider>
     </div>
   );
 }

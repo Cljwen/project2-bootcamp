@@ -15,25 +15,44 @@ import { useEffect, useState } from "react";
 import { ref, get } from "firebase/database";
 import { USERS } from "../firebase";
 import { database } from "../firebase";
-
-export function NavBar() {
-  return (
-    <div>
-      <Link to="/RequestForm">Request Form</Link>
-      <br />
-      <Link to="/AddPetForm">Pet Form</Link>
-      <br />
-      <Link to="/SignUp">Sign up Form</Link>
-      <br />
-      <Link to="/ProfileForm">Profile Form</Link>
-      <br />
-      <Link to="/Request">Request</Link>
-    </div>
-  );
-}
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import Divider from "@mui/material/Divider";
 
 export function ResponsiveAppBar(props) {
-  // const pages = ["Requests", "Walkers", "Schedule", "Profile", "Support"];
+  const navItems = ["Requests", "Walkers", "Schedule", "Profile", "Support"];
+
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        NAW
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item} disablePadding>
+            <Link to={`/${item}`} style={{ textDecoration: "none" }}>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                {item}
+                {/* <ListItemText primary={item} /> */}
+              </ListItemButton>
+            </Link>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -117,21 +136,36 @@ export function ResponsiveAppBar(props) {
               }}
             >
               <MenuItem>
-                <Link to="/Request">Request</Link>
+                <Link to="/Requests" style={{ textDecoration: "none" }}>
+                  Request
+                </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/RequestForm">Request Form</Link>
+                <Link to="/RequestForm" style={{ textDecoration: "none" }}>
+                  Request Form
+                </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/AddPetForm">Pet Form</Link>
+                <Link to="/AddPetForm" style={{ textDecoration: "none" }}>
+                  Pet Form
+                </Link>
               </MenuItem>
               <br />
               <MenuItem>
-                <Link to="/SignUp">Sign up Form</Link>
+                <Link to="/SignUp" style={{ textDecoration: "none" }}>
+                  Sign up Form
+                </Link>
               </MenuItem>
               <br />
               <MenuItem>
-                <Link to="/ProfileForm">Profile Form</Link>
+                <Link to="/ProfileForm" style={{ textDecoration: "none" }}>
+                  Profile Form
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to="/Schedule" style={{ textDecoration: "none" }}>
+                  Schedule
+                </Link>
               </MenuItem>
               <br />
               {/* {pages.map((page) => (
@@ -161,7 +195,7 @@ export function ResponsiveAppBar(props) {
             NAW
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link to="/Request" style={{ textDecoration: "none" }}>
+            <Link to="/Requests" style={{ textDecoration: "none" }}>
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}

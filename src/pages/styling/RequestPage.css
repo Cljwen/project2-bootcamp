@@ -1,0 +1,66 @@
+/* .Request-Card-Collection-Bundle {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: left;
+  width: 100%;
+} */
+
+.Location-icon {
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: left;
+  padding: 5px;
+}
+
+.Card-avatar-header-name-placement {
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: left;
+  padding-left: 5px;
+  margin-left: 5px;
+}
+
+.Card-request-date-time-icon {
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: left;
+  /* padding: 5px; */
+  /* margin: 5px; */
+}
+
+.Card-request-date-time-icon div {
+  /* padding: 5px; */
+  margin-left: 5px;
+}
+
+.Card-pet-info-flex {
+  display: flex;
+  flex: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  color: #757575;
+}
+
+.Card-pet-info-flex div {
+  display: flex;
+  flex: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  /* margin: 0px 10px; */
+  padding: 2px 5px;
+}
+
+.Card-pet-info-icon {
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  padding: 5px;
+}

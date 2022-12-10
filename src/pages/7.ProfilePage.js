@@ -1,9 +1,16 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { ref, onChildAdded, get, set } from "firebase/database";
+import { ref, onChildAdded, get } from "firebase/database";
 import { USERS } from "../firebase";
 import { database } from "../firebase";
-import { Avatar, Button, Card, Paper } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Card,
+  Paper,
+  ThemeProvider,
+  Typography,
+} from "@mui/material";
 import "./styling/Profilepage.css";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -12,6 +19,9 @@ import Stack from "@mui/material/Stack";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
+import "../components/style/DrawerNavBar.css";
+import { GlobalTheme } from "../pages/styling/Theme";
+import { Link } from "react-router-dom";
 
 export function ProfilePage(props) {
   const [petList, setPetList] = useState([]);
@@ -37,15 +47,17 @@ export function ProfilePage(props) {
       const profileRef = ref(database, profilePathway);
 
       get(profileRef).then((snapshot) => {
-        console.log(snapshot);
-        console.log(snapshot.val());
         setDisplayPicLink(snapshot.val().displayPic);
         setUserName(snapshot.val().name);
         setRegion(snapshot.val().region);
         setDescription(snapshot.val().description);
       });
     }
-  }, [props.user, petList]);
+  }, [props.user]);
+
+  // function handleAddPet() {
+
+  // }
 
   return (
     <div>
@@ -71,7 +83,7 @@ export function ProfilePage(props) {
             sx={{ margin: "20px 20px 20px 20px" }}
           >
             <h2 align="left">{userName}</h2>
-            <div align="left">
+            <div align="left" className="Location-icon">
               <LocationOnIcon sx={{ padding: "0px", margin: "0px" }} /> {region}
             </div>
           </Grid2>
@@ -83,65 +95,80 @@ export function ProfilePage(props) {
 
       {petList && petList.length > 0 ? (
         <div>
-          <Paper elevation={8} />
-          <Card sx={{ margin: "20px 20px 20px 20px", padding: "10px 0px" }}>
-            <div className="Pet-list-top-container">
-              <div className="Pet-list-top-header">
-                <div className="Pet-list-top-header-left-container">
-                  <h2 align="left">Pets</h2>
-                </div>
-                <div className="Pet-list-top-header-right-container">
-                  <IconButton aria-label="add">
-                    <AddIcon />
-                  </IconButton>
-                  <IconButton aria-label="edit">
-                    <EditIcon />
-                  </IconButton>
+          <ThemeProvider theme={GlobalTheme}>
+            <Paper elevation={8} />
+            <Card sx={{ margin: "20px 20px 20px 20px", padding: "10px 0px" }}>
+              <div className="Pet-list-top-container">
+                <div className="Pet-list-top-header">
+                  <div className="Pet-list-top-header-left-container">
+                    <Typography color="primary">
+                      <h2 align="left">Pets</h2>
+                    </Typography>
+                  </div>
+                  <div className="Pet-list-top-header-right-container">
+                    <IconButton aria-label="add">
+                      <Link to="/AddPetForm" style={{ textDecoration: "none" }}>
+                        <AddIcon color="primary" />
+                      </Link>
+                    </IconButton>
+                    <IconButton color="primary" aria-label="edit">
+                      <EditIcon />
+                    </IconButton>
+                  </div>
                 </div>
               </div>
-            </div>
-            {petList.map((pet, index) => {
-              return (
-                <div key={index}>
-                  <Grid2 container xs={12}>
-                    <Grid2 xs={4} sm={2} md={2} lg={2} justifyContent="center">
-                      <Avatar
-                        alt={pet.key}
-                        src={`${pet.info.petDisplayPic}`}
-                        sx={{
-                          width: 70,
-                          height: 70,
-                          margin: "20px 20px 20px 20px",
-                        }}
-                      />
+              {petList.map((pet, index) => {
+                return (
+                  <div key={index}>
+                    <Grid2 container xs={12}>
+                      <Grid2
+                        xs={4}
+                        sm={2}
+                        md={2}
+                        lg={2}
+                        justifyContent="center"
+                      >
+                        <Avatar
+                          alt={pet.key}
+                          src={`${pet.info.petDisplayPic}`}
+                          sx={{
+                            width: 70,
+                            height: 70,
+                            margin: "20px 20px 20px 20px",
+                          }}
+                        />
+                      </Grid2>
+                      <Grid2 xs={8} sm={9} md={9} lg={9}>
+                        <Stack align="left" spacing={1}>
+                          <Typography color="primary">
+                            <h4 className="Petname-h4" align="left">
+                              {pet.key}
+                            </h4>
+                          </Typography>
+                          <div className="Pet-info">
+                            {/* <Typography color="primary.light"> */}
+                            Age: {pet.info.age}
+                            <br />
+                            Breed: {pet.info.breed}
+                            <br />
+                            Gender: {pet.info.gender}
+                            <br />
+                            Size: {pet.info.size}
+                            {/* </Typography> */}
+                          </div>
+                          <div className="Pet-description-paragraph">
+                            <p align="left">{pet.info.petDescription}</p>
+                          </div>
+                        </Stack>
+                      </Grid2>
                     </Grid2>
-                    <Grid2 xs={8} sm={9} md={9} lg={9}>
-                      <Stack align="left" spacing={1}>
-                        <h4 className="Petname-h4" align="left">
-                          {pet.key}
-                        </h4>
-                        <div className="Pet-info">
-                          {console.log(pet.info)}
-                          Age: {pet.info.age}
-                          <br />
-                          Breed: {pet.info.breed}
-                          <br />
-                          Gender: {pet.info.gender}
-                          <br />
-                          Size: {pet.info.size}
-                        </div>
-                        <div className="Pet-description-paragraph">
-                          <p align="left">{pet.info.petDescription}</p>
-                        </div>
-                      </Stack>
-                    </Grid2>
-                  </Grid2>
-                  <br />
-                  {index < petList.length - 1 && <Divider variant="middle" />}
-                </div>
-              );
-            })}
-          </Card>
+                    <br />
+                    {index < petList.length - 1 && <Divider variant="middle" />}
+                  </div>
+                );
+              })}
+            </Card>
+          </ThemeProvider>
         </div>
       ) : (
         <p>You do not have any pets yet. </p>

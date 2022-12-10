@@ -7,12 +7,12 @@ import { SignUpForm } from "./forms/1.SignUpForm";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import { Link, Routes, Route, BrowserRouter } from "react-router-dom";
-import { ResponsiveAppBar } from "./components/NavBar";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ProfilePage } from "./pages/7.ProfilePage";
 import { RequestPage } from "./pages/4.RequestPage";
 import { Walker } from "./pages/5.WalkerPage";
 import { Schedule } from "./pages/6.Schedule";
+import DrawerAppBar from "./components/DrawerBar";
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
@@ -44,14 +44,19 @@ function App() {
     <div className="App">
       {/* <header className="App-header"> */}
       <BrowserRouter>
-        {userLoggedIn ? <ResponsiveAppBar user={userLoggedIn} /> : null}
+        {userLoggedIn ? (
+          <div>
+            {/* <ResponsiveAppBar user={userLoggedIn} /> */}
+            <DrawerAppBar user={userLoggedIn} />
+          </div>
+        ) : null}
         <Routes>
           <Route
             path="/RequestForm"
             element={<RequestForm user={userLoggedIn} />}
           />
           <Route
-            path="/Request"
+            path="/Requests"
             element={<RequestPage user={userLoggedIn} />}
           />
           <Route

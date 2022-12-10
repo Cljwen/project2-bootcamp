@@ -14,8 +14,10 @@
 }
 
 .Location-icon {
-  align-items: left;
-  justify-content: left;
+  display: flex;
+  flex: row;
+  align-items: center;
+  padding: 5px;
 }
 
 .Pet-info {
