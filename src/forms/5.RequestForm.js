@@ -16,6 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ThemeProvider } from "@mui/system";
+import { FormHelperText, Input, InputAdornment } from "@mui/material";
 
 export function RequestForm(props) {
   const [petList, setPetList] = useState([]);
@@ -25,6 +26,7 @@ export function RequestForm(props) {
   const [selectedPetInfo, setSelectedPetInfo] = useState();
   const [date, setDate] = useState(null);
   const [ownerInfo, setOwnerInfo] = useState(null);
+  const [walkBudget, setWalkBudget] = useState("");
 
   const options = {
     // weekday: "long",
@@ -66,8 +68,7 @@ export function RequestForm(props) {
     }
   }, [props.user]);
 
-  //add request for a pet
-  //check for existing request
+  //check for existing pets
   useEffect(() => {
     if (selectedPet) {
       const dbPathway = `${USERS}/${props.user.uid}/PETS`;
@@ -115,19 +116,20 @@ export function RequestForm(props) {
       newTimeSlotArray = requestedInfoFromFireBase.timeslot;
       // if user has selected a time
       if (selectedTime && ownerInfo) {
-        console.log(date.$d);
         newTimeSlotArray.push({
           date: date.$d.toLocaleDateString("en-US", options),
           dateObject: date.$d.toLocaleDateString(),
           timeslot: selectedTime,
           status: "Pending",
-          datePosted: new Date().toLocaleDateString("en-US", options),
+          datePosted: new Date().toLocaleDateString(),
+          walkBudget: walkBudget,
         });
         console.log(newTimeSlotArray);
         set(requestFolder, {
           timeslot: [...newTimeSlotArray],
           pet: selectedPet,
           selectedPetInfo: selectedPetInfo,
+          walkBudget: walkBudget,
         });
 
         set(ownerInfoFolder, ownerInfo[0]);
@@ -135,6 +137,7 @@ export function RequestForm(props) {
           timeslot: [...newTimeSlotArray],
           pet: selectedPet,
           selectedPetInfo: selectedPetInfo,
+          walkBudget: walkBudget,
         });
       }
     }
@@ -147,8 +150,9 @@ export function RequestForm(props) {
             date: date.$d.toLocaleDateString("en-US", options),
             dateObject: date.$d.toLocaleDateString(),
             timeslot: selectedTime,
-            datePosted: new Date().toLocaleDateString("en-US", options),
+            datePosted: new Date().toLocaleDateString(),
             status: "Pending",
+            walkBudget: walkBudget,
           },
         ],
         pet: selectedPet,
@@ -160,15 +164,15 @@ export function RequestForm(props) {
             date: date.$d.toLocaleDateString("en-US", options),
             dateObject: date.$d.toLocaleDateString(),
             timeslot: selectedTime,
-            datePosted: new Date().toLocaleDateString("en-US", options),
+            datePosted: new Date().toLocaleDateString(),
             status: "Pending",
+            walkBudget: walkBudget,
           },
         ],
         pet: selectedPet,
         selectedPetInfo: selectedPetInfo,
       });
     }
-
     clearFormEntries();
   }
 
@@ -176,6 +180,7 @@ export function RequestForm(props) {
     setSelectedPet("");
     setSelectedTime("");
     setDate(null);
+    setWalkBudget("");
   }
 
   return (
@@ -230,9 +235,25 @@ export function RequestForm(props) {
             ))}
           </Select>
         </FormControl>
-        <br />
+        <FormControl variant="standard" fullWidth sx={{ margin: "10px 0px" }}>
+          <InputLabel id="Walk Budget">Walk Budget</InputLabel>
+          <Input
+            required
+            type="number"
+            id="budget"
+            label="Walk Budget"
+            onChange={(e) => setWalkBudget(e.target.value)}
+            value={walkBudget}
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            endAdornment={
+              <InputAdornment position="end">/ 30 min walk</InputAdornment>
+            }
+          />
+          <FormHelperText>*Please enter numbers only.</FormHelperText>
+        </FormControl>
+
         <Button variant="contained" onClick={(e) => handleSubmit(e)}>
-          Enter Request
+          Post a Request
         </Button>
       </ThemeProvider>
     </div>

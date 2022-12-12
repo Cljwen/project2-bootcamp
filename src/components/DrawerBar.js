@@ -12,7 +12,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { Avatar, Menu } from "@mui/material";
+import { Avatar, ListItemText, Menu } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ref, get } from "firebase/database";
 import { USERS } from "../firebase";
@@ -49,34 +49,40 @@ function DrawerAppBar(props) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <div className="Navbar-Mobile-Drawer-Top-Div">
-        <div className="Navbar-Mobile-Drawer-Top-Div-Avatar">
-          <Avatar
-            alt="Username profile"
-            src={`${displayPicLink}`}
-            sx={{ margin: "5px 5px 0px 0px " }}
-          />
-          <p>{userName}</p>
-        </div>
-      </div>
-      {/* <Typography color="primary" variant="h6" sx={{ my: 2 }}>
-        NAW
-      </Typography> */}
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <Link to={`/${item}`} style={{ textDecoration: "none" }}>
-              <ListItemButton sx={{ textAlign: "center", color: "primary" }}>
-                {item}
-                {/* <ListItemText primary={item} /> */}
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+    <ThemeProvider theme={GlobalTheme}>
+      <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+        <Link to="/Profile" style={{ textDecoration: "none" }}>
+          <div className="Navbar-Mobile-Drawer-Top-Div">
+            <div className="Navbar-Mobile-Drawer-Top-Div-Avatar">
+              <Avatar
+                alt="Username profile"
+                src={`${displayPicLink}`}
+                sx={{ margin: "5px 5px 0px 0px " }}
+              />
+              <Typography color="primary">
+                <p textDecoration="none">{userName}</p>
+              </Typography>
+            </div>
+          </div>
+        </Link>
+        {/* <Typography color="primary" variant="h6" sx={{ my: 2 }}>
+          NAW
+        </Typography> */}
+        <Divider />
+        <List>
+          {navItems.map((item) => (
+            <ListItem key={item} disablePadding>
+              <Link to={`/${item}`} style={{ textDecoration: "none" }}>
+                <ListItemButton sx={{ textAlign: "center", color: "primary" }}>
+                  {item}
+                  {/* <ListItemText primary={item} /> */}
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </ThemeProvider>
   );
 
   const container =
@@ -132,7 +138,9 @@ function DrawerAppBar(props) {
             </Box>
 
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              <Avatar alt="Username profile" src={`${displayPicLink}`} />
+              {displayPicLink && (
+                <Avatar alt="Username profile" src={`${displayPicLink}`} />
+              )}
             </Box>
           </Toolbar>
         </AppBar>

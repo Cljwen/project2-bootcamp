@@ -48,11 +48,12 @@ export function RequestPage(props) {
       console.log(walkerID);
       onValue(allRequests, (snapshot) => {
         if (snapshot.val()) {
+          console.log(snapshot.val());
           let arrayOfEntries = [];
           Object.keys(snapshot.val()).forEach(function (key) {
             if (
-              snapshot.val()[key].pet.timeslot &&
-              snapshot.val()[key].pet.timeslot.length > 1
+              snapshot.val()[key].pet &&
+              snapshot.val()[key].pet.timeslot.length > 0
             ) {
               let i = 0;
               while (i < snapshot.val()[key].pet.timeslot.length) {
@@ -67,16 +68,17 @@ export function RequestPage(props) {
                 });
                 i++;
               }
-            } else {
-              arrayOfEntries.push({
-                key: key,
-                owner: snapshot.val()[key].owner,
-                pet: snapshot.val()[key].pet.pet,
-                petInfo: snapshot.val()[key].pet.selectedPetInfo,
-                timeslot: snapshot.val()[key].pet.timeslot,
-                index: 0,
-              });
             }
+            // else {
+            //   arrayOfEntries.push({
+            //     key: key,
+            //     owner: snapshot.val()[key].owner,
+            //     pet: snapshot.val()[key].pet.pet,
+            //     petInfo: snapshot.val()[key].pet.selectedPetInfo,
+            //     timeslot: snapshot.val()[key].pet.timeslot,
+            //     index: 0,
+            //   });
+            // }
           });
           console.log(arrayOfEntries);
           setRequestsList(arrayOfEntries);
@@ -178,27 +180,42 @@ export function RequestPage(props) {
                         padding: "1rem",
                       }}
                     >
-                      {/* <div>
-                        <div className="Card-avatar-header-name-placement">
-                          {request.owner.name}
-                        </div>
-                        <Avatar
-                          alt="Username profile"
-                          src={`${request.owner.displayPic}`}
-                          sx={{ margin: "5px 5px 0px 0px " }}
-                        />
-                        <div className="Location-icon">
-                          <LocationOnIcon
-                            sx={{
-                              padding: "0px",
-                              margin: "0px",
-                            }}
-                          />
-                          {request.owner.region}
-                        </div>
-                        <Rating name="read-only" value={3} readOnly />
-                      </div> */}
-                      <CardHeader
+                      <div>
+                        <Grid2 container>
+                          <Grid2 xs={2}>
+                            <Avatar
+                              alt="Username profile"
+                              src={`${request.owner.displayPic}`}
+                              sx={{ margin: "5px 5px 0px 0px " }}
+                            />
+                          </Grid2>
+                          <Grid2 xs={6}>
+                            <div className="Card-avatar-header-name-placement">
+                              {request.owner.name}
+                            </div>
+                            <div className="Location-icon">
+                              <LocationOnIcon
+                                sx={{
+                                  padding: "0px",
+                                  margin: "0px",
+                                }}
+                              />
+                              <div className="Location-icon-region">
+                                {request.owner.region}
+                              </div>
+                            </div>
+                          </Grid2>
+                          <Grid2 xs={4}>
+                            <Rating
+                              size="small"
+                              name="read-only"
+                              value={3}
+                              readOnly
+                            />
+                          </Grid2>
+                        </Grid2>
+                      </div>
+                      {/* <CardHeader
                         sx={{ color: "primary" }}
                         avatar={
                           <Avatar
@@ -223,22 +240,43 @@ export function RequestPage(props) {
                             {request.owner.region}
                           </div>
                         }
-                      />
+                      /> */}
                       <CardMedia
                         component="img"
                         height="200"
                         image={`${request.petInfo.petDisplayPic}`}
                         alt="Pet name"
                       />
+
                       <div align="left">
-                        <h2> {request.pet}</h2>
-                        <div className="Card-request-date-time-icon">
-                          <DateRangeIcon />
-                          <div>{request.timeslot[0].date}</div>
+                        <div className="Card-request-pet-walk-budget">
+                          <h2> {request.pet}</h2>
+                          <div className="Card-request-important-info-budget">
+                            {request.timeslot[0].walkBudget} SGD
+                            <div className="Card-request-important-info-budget-small-p">
+                              for 30 min walk
+                            </div>
+                          </div>
                         </div>
-                        <div className="Card-request-date-time-icon">
-                          <AccessTimeIcon />
-                          <div>{request.timeslot[0].timeslot}</div>
+                        <div className="Card-request-important-info">
+                          <div className="Card-request-date-time-icon-flex-column">
+                            <div className="Card-request-date-time-icon">
+                              <DateRangeIcon />
+                              <div>{request.timeslot[0].date}</div>
+                            </div>
+
+                            <div className="Card-request-date-time-icon">
+                              <AccessTimeIcon />
+                              <div>{request.timeslot[0].timeslot}</div>
+                            </div>
+                          </div>
+                          {/* 
+                          <div className="Card-request-important-info-budget">
+                            {request.timeslot[0].walkBudget} SGD
+                            <div className="Card-request-important-info-budget-small-p">
+                              for 30 min walk
+                            </div>
+                          </div> */}
                         </div>
                       </div>
                       <Divider sx={{ margin: "10px 0px" }} />

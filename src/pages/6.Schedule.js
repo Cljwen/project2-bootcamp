@@ -6,7 +6,10 @@ import { USERS } from "../firebase";
 import { Button, Card } from "@mui/material";
 
 export function Schedule(props) {
+  const [ownDogRequests, setOwnDogRequests] = useState(null);
+
   const [acceptedRequests, setAcceptedRequests] = useState(null);
+  const [gotAcceptRequest, setGotAcceptRequest] = useState(false);
 
   useEffect(() => {
     if (props.user) {
@@ -17,6 +20,7 @@ export function Schedule(props) {
 
       onValue(allAcceptedRequests, (snapshot) => {
         if (snapshot.val()) {
+          setGotAcceptRequest(true);
           console.log(snapshot.val());
           let arrayOfEntries = [];
           Object.keys(snapshot.val()).forEach(function (key) {
@@ -36,7 +40,7 @@ export function Schedule(props) {
   }, [props.user]);
   return (
     <div>
-      {acceptedRequests && acceptedRequests.length > 0 && (
+      {acceptedRequests && acceptedRequests.length > 0 ? (
         <div>
           {acceptedRequests.map((request) => {
             return (
@@ -72,6 +76,11 @@ export function Schedule(props) {
             );
           })}
         </div>
+      ) : (
+        <h2>
+          Hmm. <br />
+          It looks like you do not have any pending walking requests.
+        </h2>
       )}
     </div>
   );

@@ -13,6 +13,7 @@ import { RequestPage } from "./pages/4.RequestPage";
 import { Walker } from "./pages/5.WalkerPage";
 import { Schedule } from "./pages/6.Schedule";
 import DrawerAppBar from "./components/DrawerBar";
+import WeatherDisplay from "./components/WeatherCall";
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
@@ -73,6 +74,10 @@ function App() {
           />
           <Route path="/Walker" element={<Walker user={userLoggedIn} />} />
           <Route path="/Schedule" element={<Schedule user={userLoggedIn} />} />
+          <Route
+            path="/WeatherCall"
+            element={<WeatherDisplay user={userLoggedIn} />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

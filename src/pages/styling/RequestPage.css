@@ -11,16 +11,27 @@
   flex: row;
   align-items: center;
   justify-content: left;
-  padding: 5px;
+  padding: 5px 5px 5px 5px;
+  margin-bottom: 10px;
+}
+
+.Location-icon-region {
+  font-size: 12px;
 }
 
 .Card-avatar-header-name-placement {
   display: flex;
   flex: row;
-  align-items: center;
+  align-items: left;
   justify-content: left;
   padding-left: 5px;
   margin-left: 5px;
+  font-size: 14px;
+}
+
+.Card-request-date-time-icon-flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .Card-request-date-time-icon {
@@ -63,4 +74,37 @@
   justify-content: center;
   align-content: center;
   padding: 5px;
+}
+
+.Card-request-important-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.Card-request-important-info-budget {
+  display: flex;
+  flex-direction: column;
+  color: #00685b;
+  font-weight: 800;
+  font-size: 22px;
+
+  text-align: right;
+  margin-left: 30px;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.Card-request-important-info-budget-small-p {
+  color: #00685b;
+  font-weight: 200;
+  text-align: right;
+  margin-left: auto;
+  font-size: 12px;
+  justify-content: center;
+}
+
+.Card-request-pet-walk-budget {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
 }

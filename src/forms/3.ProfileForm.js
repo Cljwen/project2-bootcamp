@@ -21,6 +21,7 @@ import {
 import { storage } from "../firebase";
 import { GlobalTheme } from "../pages/styling/Theme";
 import { ThemeProvider } from "@mui/system";
+import { Input, InputAdornment, FormHelperText } from "@mui/material";
 
 export function ProfileForm() {
   const [name, setName] = useState("");
@@ -30,19 +31,16 @@ export function ProfileForm() {
   const [walker, setWalkerStatus] = useState("");
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
+  const [walkerJobPrice, setWalkerJobPrice] = useState("");
 
   function handleFileChange(e) {
     setDisplayPicValue(e.target.value);
     setDisplayPic(e.target.files[0]);
-    console.log(e.target.files[0]);
-    console.log(e.target.value);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
     const dbPathway = `${USERS}/${auth.currentUser.uid}`;
-    console.log(dbPathway);
-
     const fileRef = storageRef(storage, `${dbPathway}/DisplayPic`);
 
     // Upload file, save file download URL in database with post text
@@ -55,6 +53,7 @@ export function ProfileForm() {
           displayPic: downloadUrl,
           description: description,
           address: address,
+          rates: walkerJobPrice,
         });
 
         const walkerListRef = ref(database, `${dbPathway}/walker`);
@@ -75,7 +74,7 @@ export function ProfileForm() {
             value={name}
           />
           <br />
-          Profile Image:
+
           <Button variant="contained" component="label">
             Upload Display Image
             <input
@@ -90,20 +89,42 @@ export function ProfileForm() {
             />
           </Button>
           <br />
-          <FormLabel id="demo-radio-buttons-group-label">
-            Do you want to be a walker?
-          </FormLabel>
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            name="radio-buttons-group"
-            value={walker}
-            onChange={(e) =>
-              setWalkerStatus(e.target.value === "true" ? true : false)
-            }
-          >
-            <FormControlLabel value="true" control={<Radio />} label="Yes" />
-            <FormControlLabel value="false" control={<Radio />} label="No" />
-          </RadioGroup>
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">
+              Do you want to be a doggy walker?
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              name="radio-buttons-group"
+              value={walker}
+              onChange={(e) =>
+                setWalkerStatus(e.target.value === "true" ? true : false)
+              }
+            >
+              <FormControlLabel value="true" control={<Radio />} label="Yes" />
+              <FormControlLabel value="false" control={<Radio />} label="No" />
+            </RadioGroup>
+            <br />
+            {walker === true ? (
+              <div>
+                <FormControl variant="standard" fullWidth>
+                  <InputLabel id="Rate per walk">Rate per walk</InputLabel>
+                  <Input
+                    required
+                    type="number"
+                    id="Rate per walk"
+                    label="Rate per walk"
+                    onChange={(e) => setWalkerJobPrice(e.target.value)}
+                    value={walkerJobPrice}
+                    startAdornment={
+                      <InputAdornment position="start">$</InputAdornment>
+                    }
+                  />
+                  <FormHelperText>*Please enter numbers only.</FormHelperText>
+                </FormControl>
+              </div>
+            ) : null}
+          </FormControl>
           <br />
           <TextField
             id="outlined-multiline-static"
@@ -111,9 +132,7 @@ export function ProfileForm() {
             multiline
             rows={4}
             value={description}
-            onChange={(e) =>
-              setDescription(e.target.value) + console.log(auth.currentUser.uid)
-            }
+            onChange={(e) => setDescription(e.target.value)}
           />
           <br />
           <FormControl>
@@ -133,7 +152,7 @@ export function ProfileForm() {
             </Select>
           </FormControl>
           <br />
-          <br />
+
           <TextField
             id="outlined-multiline-static"
             label="Address"
@@ -150,6 +169,8 @@ export function ProfileForm() {
           >
             Save
           </Button>
+          <br />
+          <br />
         </FormControl>
       </ThemeProvider>
     </div>

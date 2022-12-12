@@ -29,3 +29,7 @@ export const auth = getAuth(firebaseApp);
 export const USERS = "USERS";
 export const REQUEST_FOLDER_NAME = "REQUEST_LIST";
 export const WALKER_FOLDER_NAME = "WALKER_LIST";
+
+export const WEATHER_APP_SCHEDULE_API = {
+  weatherAppCall: process.env.REACT_APP_WEATHER_APP_API_KEY,
+};

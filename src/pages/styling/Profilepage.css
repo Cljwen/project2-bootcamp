@@ -67,3 +67,8 @@
   flex-direction: row;
   margin: 0px 10px 0px 0px;
 }
+
+.Pet-list-empty-text-display {
+  margin: 20px 20px;
+  text-align: left;
+}
