@@ -19,6 +19,8 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { storage } from "../firebase";
+import { GlobalTheme } from "../pages/styling/Theme";
+import { ThemeProvider } from "@mui/system";
 
 export function ProfileForm() {
   const [name, setName] = useState("");
@@ -63,91 +65,93 @@ export function ProfileForm() {
 
   return (
     <div>
-      <FormControl>
-        <TextField
-          required
-          id="Username"
-          label="Name"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-        />
-        <br />
-        Profile Image:
-        <Button variant="contained" component="label">
-          Upload Display Image
-          <input
-            hidden
-            accept="image/*"
-            multiple
-            type="file"
-            value={displayPicValue}
-            onChange={(e) => {
-              handleFileChange(e);
-            }}
-          />
-        </Button>
-        <br />
-        <FormLabel id="demo-radio-buttons-group-label">
-          Do you want to be a walker?
-        </FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          name="radio-buttons-group"
-          value={walker}
-          onChange={(e) =>
-            setWalkerStatus(e.target.value === "true" ? true : false)
-          }
-        >
-          <FormControlLabel value="true" control={<Radio />} label="Yes" />
-          <FormControlLabel value="false" control={<Radio />} label="No" />
-        </RadioGroup>
-        <br />
-        <TextField
-          id="outlined-multiline-static"
-          label="Description"
-          multiline
-          rows={4}
-          value={description}
-          onChange={(e) =>
-            setDescription(e.target.value) + console.log(auth.currentUser.uid)
-          }
-        />
-        <br />
+      <ThemeProvider theme={GlobalTheme}>
         <FormControl>
-          <InputLabel id="Region">Region</InputLabel>
-          <Select
-            labelId="Region"
-            id="Region"
-            label="Region"
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
+          <TextField
+            required
+            id="Username"
+            label="Name"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+          <br />
+          Profile Image:
+          <Button variant="contained" component="label">
+            Upload Display Image
+            <input
+              hidden
+              accept="image/*"
+              multiple
+              type="file"
+              value={displayPicValue}
+              onChange={(e) => {
+                handleFileChange(e);
+              }}
+            />
+          </Button>
+          <br />
+          <FormLabel id="demo-radio-buttons-group-label">
+            Do you want to be a walker?
+          </FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            name="radio-buttons-group"
+            value={walker}
+            onChange={(e) =>
+              setWalkerStatus(e.target.value === "true" ? true : false)
+            }
           >
-            {regionList.map((region) => (
-              <MenuItem key={region} value={region}>
-                {region}
-              </MenuItem>
-            ))}
-          </Select>
+            <FormControlLabel value="true" control={<Radio />} label="Yes" />
+            <FormControlLabel value="false" control={<Radio />} label="No" />
+          </RadioGroup>
+          <br />
+          <TextField
+            id="outlined-multiline-static"
+            label="Description"
+            multiline
+            rows={4}
+            value={description}
+            onChange={(e) =>
+              setDescription(e.target.value) + console.log(auth.currentUser.uid)
+            }
+          />
+          <br />
+          <FormControl>
+            <InputLabel id="Region">Region</InputLabel>
+            <Select
+              labelId="Region"
+              id="Region"
+              label="Region"
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+            >
+              {regionList.map((region) => (
+                <MenuItem key={region} value={region}>
+                  {region}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <br />
+          <br />
+          <TextField
+            id="outlined-multiline-static"
+            label="Address"
+            multiline
+            rows={4}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          <br />
+          <Button
+            variant="contained"
+            value="submit"
+            onClick={(e) => handleSubmit(e)}
+          >
+            Save
+          </Button>
         </FormControl>
-        <br />
-        <br />
-        <TextField
-          id="outlined-multiline-static"
-          label="Address"
-          multiline
-          rows={4}
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <br />
-        <Button
-          variant="contained"
-          value="submit"
-          onClick={(e) => handleSubmit(e)}
-        >
-          Save
-        </Button>
-      </FormControl>
+      </ThemeProvider>
     </div>
   );
 }

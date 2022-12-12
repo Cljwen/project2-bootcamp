@@ -17,7 +17,6 @@ import DrawerAppBar from "./components/DrawerBar";
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
   const [isFetchingUser, setIsFetchingUser] = useState(false);
-  console.log(userLoggedIn);
   useEffect(() => {
     setIsFetchingUser(true);
     onAuthStateChanged(auth, (user) => {

@@ -20,6 +20,11 @@
   padding: 5px;
 }
 
+.Pet-list-header {
+  color: #00685b;
+  align-items: left;
+}
+
 .Pet-info {
   color: grey;
 }
@@ -33,6 +38,7 @@
   padding: 20px 0px 0px 0px;
   margin-block-start: 0px;
   margin-block-end: 0px;
+  color: #00685b;
 }
 
 .Pet-list-top-container {

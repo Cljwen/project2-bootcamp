@@ -50,7 +50,10 @@ export function RequestPage(props) {
         if (snapshot.val()) {
           let arrayOfEntries = [];
           Object.keys(snapshot.val()).forEach(function (key) {
-            if (snapshot.val()[key].pet.timeslot.length > 1) {
+            if (
+              snapshot.val()[key].pet.timeslot &&
+              snapshot.val()[key].pet.timeslot.length > 1
+            ) {
               let i = 0;
               while (i < snapshot.val()[key].pet.timeslot.length) {
                 arrayOfEntries.push({
@@ -60,6 +63,7 @@ export function RequestPage(props) {
                   petInfo: snapshot.val()[key].pet.selectedPetInfo,
                   timeslot: [snapshot.val()[key].pet.timeslot[i]],
                   index: i,
+                  datePosted: snapshot.val()[key].pet.selectedPetInfo,
                 });
                 i++;
               }

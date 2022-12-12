@@ -38,7 +38,6 @@ export function ProfilePage(props) {
 
       onChildAdded(petsRef, (data) => {
         newPetList.push({ key: data.key, info: data.val() });
-        console.log(petList);
         if (newPetList) {
           setPetList(newPetList);
         }
@@ -54,10 +53,6 @@ export function ProfilePage(props) {
       });
     }
   }, [props.user]);
-
-  // function handleAddPet() {
-
-  // }
 
   return (
     <div>
@@ -88,7 +83,7 @@ export function ProfilePage(props) {
             </div>
           </Grid2>
           <Grid2 xs={12} sm={12} md={12} lg={12} sx={{ margin: "20px" }}>
-            <p align="left">{description}</p>
+            <div align="left">{description}</div>
           </Grid2>
         </Grid2>
       </Card>
@@ -101,9 +96,7 @@ export function ProfilePage(props) {
               <div className="Pet-list-top-container">
                 <div className="Pet-list-top-header">
                   <div className="Pet-list-top-header-left-container">
-                    <Typography color="primary">
-                      <h2 align="left">Pets</h2>
-                    </Typography>
+                    <h2 className="Pet-list-header ">Pets</h2>
                   </div>
                   <div className="Pet-list-top-header-right-container">
                     <IconButton aria-label="add">
@@ -140,13 +133,10 @@ export function ProfilePage(props) {
                       </Grid2>
                       <Grid2 xs={8} sm={9} md={9} lg={9}>
                         <Stack align="left" spacing={1}>
-                          <Typography color="primary">
-                            <h4 className="Petname-h4" align="left">
-                              {pet.key}
-                            </h4>
-                          </Typography>
+                          <h4 className="Petname-h4" align="left">
+                            {pet.key}
+                          </h4>
                           <div className="Pet-info">
-                            {/* <Typography color="primary.light"> */}
                             Age: {pet.info.age}
                             <br />
                             Breed: {pet.info.breed}
@@ -154,7 +144,6 @@ export function ProfilePage(props) {
                             Gender: {pet.info.gender}
                             <br />
                             Size: {pet.info.size}
-                            {/* </Typography> */}
                           </div>
                           <div className="Pet-description-paragraph">
                             <p align="left">{pet.info.petDescription}</p>

@@ -6,10 +6,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import { get, onChildAdded, ref, set } from "firebase/database";
-import { USERS, database, auth, REQUEST_FOLDER_NAME } from "../firebase";
+import { USERS, database, REQUEST_FOLDER_NAME } from "../firebase";
 import { onValue } from "firebase/database";
 import { timeslotList } from "./lists/pet/timeslots";
-// import BasicDatePicker from "../components/CalendarPicker";
 import { GlobalTheme } from "../pages/styling/Theme";
 
 import TextField from "@mui/material/TextField";
@@ -51,7 +50,6 @@ export function RequestForm(props) {
           region: snapshot.val().region,
           address: snapshot.val().address,
         });
-        console.log(downloadOwnerProfile);
         setOwnerInfo(downloadOwnerProfile);
       });
 
@@ -123,6 +121,7 @@ export function RequestForm(props) {
           dateObject: date.$d.toLocaleDateString(),
           timeslot: selectedTime,
           status: "Pending",
+          datePosted: new Date().toLocaleDateString("en-US", options),
         });
         console.log(newTimeSlotArray);
         set(requestFolder, {
@@ -148,6 +147,7 @@ export function RequestForm(props) {
             date: date.$d.toLocaleDateString("en-US", options),
             dateObject: date.$d.toLocaleDateString(),
             timeslot: selectedTime,
+            datePosted: new Date().toLocaleDateString("en-US", options),
             status: "Pending",
           },
         ],
@@ -160,6 +160,7 @@ export function RequestForm(props) {
             date: date.$d.toLocaleDateString("en-US", options),
             dateObject: date.$d.toLocaleDateString(),
             timeslot: selectedTime,
+            datePosted: new Date().toLocaleDateString("en-US", options),
             status: "Pending",
           },
         ],
