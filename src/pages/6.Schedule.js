@@ -7,10 +7,14 @@ import {
   Avatar,
   Button,
   Card,
+  CardActions,
+  CardContent,
+  Collapse,
   Divider,
   IconButton,
   Paper,
   ThemeProvider,
+  Typography,
 } from "@mui/material";
 import "./styling/SchedulePage.css";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -26,11 +30,14 @@ import BalanceOutlinedIcon from "@mui/icons-material/BalanceOutlined";
 import ArtTrackOutlinedIcon from "@mui/icons-material/ArtTrackOutlined";
 import FemaleOutlinedIcon from "@mui/icons-material/FemaleOutlined";
 import MaleOutlinedIcon from "@mui/icons-material/MaleOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { styled } from "@mui/system";
 
 export function Schedule(props) {
   const [ownDogRequests, setOwnDogRequests] = useState(null);
   const [acceptedRequests, setAcceptedRequests] = useState(null);
   const [gotAcceptRequest, setGotAcceptRequest] = useState(false);
+  const [requestIndex, setRequestIndex] = useState(null);
 
   useEffect(() => {
     if (props.user) {
@@ -94,6 +101,24 @@ export function Schedule(props) {
       });
     }
   }, [props.user]);
+
+  const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+  })(({ theme, expand }) => ({
+    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  }));
+
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = (props) => {
+    setExpanded(!expanded);
+    setRequestIndex(props.index);
+  };
 
   return (
     <div>
@@ -243,60 +268,107 @@ export function Schedule(props) {
                                   </Grid2>
                                 </Grid2>
 
-                                <Divider />
-                                <Grid2 container rowSpacing={0}>
-                                  <Grid2>
-                                    <div className="Card-pet-info-icon">
-                                      <ArtTrackOutlinedIcon
-                                        sx={{ padding: "0px 5px" }}
-                                      />
-                                      Breed: {request.petInfo.breed}
-                                    </div>
-                                  </Grid2>
-                                  <div className="Card-pet-info-icon">
-                                    <CakeOutlinedIcon
-                                      sx={{ padding: "0px 5px" }}
-                                    />
-                                    Age: {request.petInfo.age}
-                                  </div>
-                                  <div className="Card-pet-info-icon">
-                                    <CakeOutlinedIcon
-                                      sx={{ padding: "0px 5px" }}
-                                    />
-                                    Age: {request.petInfo.size}
-                                  </div>
+                                <CardActions disableSpacing>
+                                  <Grid2
+                                    container
+                                    rowSpacing={0}
+                                    wrap
+                                    sx={{
+                                      padding: "0px",
+                                      margin: "0px",
+                                    }}
+                                  >
+                                    <Grid2>
+                                      <div className="Scheduled-page-card-address">
+                                        Address: {request.owner.address}
+                                      </div>
+                                    </Grid2>
 
-                                  <div className="Card-pet-info-icon">
-                                    {request.petInfo.gender === "Female" ? (
-                                      <FemaleOutlinedIcon
-                                        sx={{ padding: "0px 5px" }}
+                                    <Grid2 xs={1} padding="0px">
+                                      <Avatar
+                                        alt="Username profile"
+                                        src={`${request.owner.displayPic}`}
+                                        sx={{
+                                          width: 20,
+                                          height: 20,
+                                          padding: "0px",
+                                          margin: "0px",
+                                        }}
                                       />
-                                    ) : (
-                                      <MaleOutlinedIcon
-                                        sx={{ padding: "0px 5px" }}
-                                      />
-                                    )}
-                                    {request.petInfo.gender}
-                                  </div>
-                                </Grid2>
+                                    </Grid2>
+                                    <Grid2 xs={2} padding="0px">
+                                      <div className="Scheduled-page-card-avatar-header-name-placement">
+                                        {request.owner.name}
+                                      </div>
+                                    </Grid2>
+                                  </Grid2>
 
-                                <Grid2
-                                  container
-                                  rowSpacing={0}
-                                  wrap
-                                  sx={{ padding: "0px", margin: "0px" }}
-                                >
-                                  <Grid2>
-                                    <div className="Card-pet-info-icon">
-                                      Address: {request.owner.address}
-                                    </div>
-                                  </Grid2>
-                                  <Grid2>
-                                    <div className="Card-pet-info-icon">
-                                      Owner: {request.owner.name}
-                                    </div>
-                                  </Grid2>
-                                </Grid2>
+                                  <ExpandMore
+                                    expand={expanded}
+                                    onClick={() => {
+                                      handleExpandClick({ index });
+                                    }}
+                                    aria-expanded={expanded}
+                                    aria-label="show more"
+                                  >
+                                    <ExpandMoreIcon />
+                                  </ExpandMore>
+                                </CardActions>
+                                <br />
+                                {requestIndex === index && (
+                                  <div>
+                                    <Collapse
+                                      in={expanded}
+                                      timeout="auto"
+                                      unmountOnExit
+                                    >
+                                      <CardContent>
+                                        {/* <Typography paragraph></Typography> */}
+                                        <Typography paragraph>
+                                          <div align="left">
+                                            {request.petInfo.petDescription}
+                                          </div>
+                                          <Grid2 container rowSpacing={0}>
+                                            <Grid2>
+                                              <div className="Card-pet-info-icon">
+                                                <ArtTrackOutlinedIcon
+                                                  sx={{ padding: "0px 5px" }}
+                                                />
+                                                Breed: {request.petInfo.breed}
+                                              </div>
+                                            </Grid2>
+                                            <div className="Card-pet-info-icon">
+                                              <CakeOutlinedIcon
+                                                sx={{ padding: "0px 5px" }}
+                                              />
+                                              Age: {request.petInfo.age}
+                                            </div>
+                                            <div className="Card-pet-info-icon">
+                                              <BalanceOutlinedIcon
+                                                sx={{ padding: "0px 5px" }}
+                                              />
+                                              Size: {request.petInfo.size}
+                                            </div>
+
+                                            <div className="Card-pet-info-icon">
+                                              {request.petInfo.gender ===
+                                              "Female" ? (
+                                                <FemaleOutlinedIcon
+                                                  sx={{ padding: "0px 5px" }}
+                                                />
+                                              ) : (
+                                                <MaleOutlinedIcon
+                                                  sx={{ padding: "0px 5px" }}
+                                                />
+                                              )}
+                                              {request.petInfo.gender}
+                                            </div>
+                                          </Grid2>
+                                        </Typography>
+                                      </CardContent>
+                                    </Collapse>
+                                  </div>
+                                )}
                               </Card>
                             </div>
                           );

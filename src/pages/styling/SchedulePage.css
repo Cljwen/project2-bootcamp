@@ -86,3 +86,19 @@
   align-content: center;
   padding: 5px;
 }
+
+.Scheduled-page-card-avatar-header-name-placement {
+  display: flex;
+  flex: row;
+  align-items: left;
+  justify-content: left;
+  padding-left: 5px;
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.Scheduled-page-card-address {
+  text-align: left;
+  overflow-wrap: break-word;
+  font-size: 14px;
+}

@@ -134,7 +134,6 @@ export function RequestPage(props) {
   const handleExpandClick = (props) => {
     setExpanded(!expanded);
     setRequestIndex(props.index);
-    console.log(props.index);
   };
 
   //should remove <br/> and instead use margins/padding to separate out entries below
@@ -216,32 +215,7 @@ export function RequestPage(props) {
                           </Grid2>
                         </Grid2>
                       </div>
-                      {/* <CardHeader
-                        sx={{ color: "primary" }}
-                        avatar={
-                          <Avatar
-                            alt="Username profile"
-                            src={`${request.owner.displayPic}`}
-                            sx={{ margin: "5px 5px 0px 0px " }}
-                          />
-                        }
-                        title={
-                          <div className="Card-avatar-header-name-placement">
-                            {request.owner.name}
-                          </div>
-                        }
-                        subheader={
-                          <div className="Location-icon">
-                            <LocationOnIcon
-                              sx={{
-                                padding: "0px",
-                                margin: "0px",
-                              }}
-                            />
-                            {request.owner.region}
-                          </div>
-                        }
-                      /> */}
+
                       <CardMedia
                         component="img"
                         height="200"
@@ -296,7 +270,7 @@ export function RequestPage(props) {
                             Age: {request.petInfo.age}
                           </div>
                           <div className="Card-pet-info-icon">
-                            <BalanceOutlinedIcon sx={{ padding: "0px 5px" }} />{" "}
+                            <BalanceOutlinedIcon sx={{ padding: "0px 5px" }} />
                             {request.petInfo.size}
                           </div>
                           <div className="Card-pet-info-icon">
