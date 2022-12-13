@@ -75,6 +75,7 @@ function DrawerAppBar(props) {
                   {item}
                   {/* <ListItemText primary={item} /> */}
                 </ListItemButton>
+                <Divider />
               </Link>
             </ListItem>
           ))}
