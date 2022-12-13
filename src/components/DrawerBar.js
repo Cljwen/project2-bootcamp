@@ -59,9 +59,7 @@ function DrawerAppBar(props) {
                 src={`${displayPicLink}`}
                 sx={{ margin: "5px 5px 0px 0px " }}
               />
-              <Typography color="primary">
-                <p textDecoration="none">{userName}</p>
-              </Typography>
+              <Typography color="primary">{userName}</Typography>
             </div>
           </div>
         </Link>

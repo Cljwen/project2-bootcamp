@@ -64,22 +64,23 @@ export function RequestPage(props) {
                   petInfo: snapshot.val()[key].pet.selectedPetInfo,
                   timeslot: [snapshot.val()[key].pet.timeslot[i]],
                   index: i,
-                  datePosted: snapshot.val()[key].pet.selectedPetInfo,
+                  datePosted: snapshot.val()[key].pet.timeslot[i].datePosted,
                 });
                 i++;
               }
             }
-            // else {
-            //   arrayOfEntries.push({
-            //     key: key,
-            //     owner: snapshot.val()[key].owner,
-            //     pet: snapshot.val()[key].pet.pet,
-            //     petInfo: snapshot.val()[key].pet.selectedPetInfo,
-            //     timeslot: snapshot.val()[key].pet.timeslot,
-            //     index: 0,
-            //   });
-            // }
           });
+          // else {
+          //   arrayOfEntries.push({
+          //     key: key,
+          //     owner: snapshot.val()[key].owner,
+          //     pet: snapshot.val()[key].pet.pet,
+          //     petInfo: snapshot.val()[key].pet.selectedPetInfo,
+          //     timeslot: snapshot.val()[key].pet.timeslot,
+          //     index: 0,
+          //   });
+          // }
+
           console.log(arrayOfEntries);
           setRequestsList(arrayOfEntries);
         } else console.log("no requests exist");
