@@ -42,10 +42,9 @@ export function ProfilePage(props) {
         // https://firebase.google.com/docs/reference/js/firebase.User
         setUserLoggedIn(user);
         setIsFetchingUser(false);
-        navigate("/LoginPage");
       } else {
         // User is signed out
-        return;
+        navigate("/Login");
       }
     });
   }, []);

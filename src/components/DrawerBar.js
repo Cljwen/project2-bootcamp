@@ -21,6 +21,7 @@ import { GlobalTheme } from "../pages/styling/Theme";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import { ThemeProvider } from "@mui/material";
 import "./style/DrawerNavBar.css";
+// import { onAuthStateChanged } from "firebase/auth";
 
 const drawerWidth = 240;
 const navItems = ["Requests", "Walker", "Schedule", "Profile", "Support"];
@@ -42,6 +43,14 @@ function DrawerAppBar(props) {
       });
     }
   }, [props.user]);
+
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (!user) {
+
+  //     }
+  //   });
+  // }, []);
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);

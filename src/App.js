@@ -16,6 +16,7 @@ import DrawerAppBar from "./components/DrawerBar";
 import WeatherDisplay from "./components/WeatherCall";
 import { LoginPage } from "./pages/3.LoginPage";
 import { redirect } from "react-router-dom";
+import { set } from "firebase/database";
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
@@ -31,7 +32,8 @@ function App() {
         setIsFetchingUser(false);
       } else {
         // User is signed out
-        return redirect("/LoginPage");
+        setUserLoggedIn(false);
+        return;
       }
     });
   }, []);
@@ -49,12 +51,13 @@ function App() {
       <BrowserRouter>
         {userLoggedIn ? (
           <div>
-            {/* <ResponsiveAppBar user={userLoggedIn} /> */}
             <DrawerAppBar user={userLoggedIn} />
           </div>
         ) : null}
         <Routes>
-          <Route path="/LoginPage" element={<LoginPage />} />
+          <Route path="/SignUp" element={<SignUpForm user={userLoggedIn} />} />
+
+          <Route path="/Login" element={<LoginPage user={userLoggedIn} />} />
           <Route
             path="/RequestForm"
             element={<RequestForm user={userLoggedIn} />}
@@ -66,11 +69,6 @@ function App() {
           <Route
             path="/AddPetForm"
             element={<AddPetForm user={userLoggedIn} />}
-          />
-          <Route path="/SignUp" element={<SignUpForm />} />
-          <Route
-            path="/ProfileForm"
-            element={<ProfileForm user={userLoggedIn} />}
           />
           <Route
             path="/Profile"

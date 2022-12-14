@@ -1,5 +1,5 @@
 export const regionList = [
-  "	Admiralty",
+  "Admiralty",
   "Aljunied",
   "Bishan",
   "Bukit Batok",

@@ -16,14 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ThemeProvider } from "@mui/system";
-import {
-  FormHelperText,
-  IconButton,
-  Input,
-  InputAdornment,
-  Snackbar,
-} from "@mui/material";
-import SimpleSnackbar from "../components/SnackBar";
+import { FormHelperText, Input, InputAdornment } from "@mui/material";
 
 export function RequestForm(props) {
   const [petList, setPetList] = useState([]);
@@ -34,6 +27,9 @@ export function RequestForm(props) {
   const [date, setDate] = useState(null);
   const [ownerInfo, setOwnerInfo] = useState(null);
   const [walkBudget, setWalkBudget] = useState("");
+
+  const [gotPetStatus, setGotPetStatus] = useState(null);
+  const [petHelperText, setPetHelperText] = useState(null);
 
   const options = {
     // weekday: "long",
@@ -51,14 +47,16 @@ export function RequestForm(props) {
       const profileRef = ref(database, profilePathway);
       const downloadOwnerProfile = [];
       onValue(profileRef, (snapshot) => {
-        downloadOwnerProfile.push({
-          userID: props.user.uid,
-          description: snapshot.val().description,
-          displayPic: snapshot.val().displayPic,
-          name: snapshot.val().name,
-          region: snapshot.val().region,
-          address: snapshot.val().address,
-        });
+        if (snapshot.val()) {
+          downloadOwnerProfile.push({
+            userID: props.user.uid,
+            description: snapshot.val().description,
+            displayPic: snapshot.val().displayPic,
+            name: snapshot.val().name,
+            region: snapshot.val().region,
+            address: snapshot.val().address,
+          });
+        }
         setOwnerInfo(downloadOwnerProfile);
       });
 
@@ -69,11 +67,26 @@ export function RequestForm(props) {
       onChildAdded(petsRef, (data) => {
         newPetList.push({ key: data.key, info: data.val() });
         if (newPetList) {
+          setGotPetStatus(true);
           setPetList(newPetList);
+          console.log(gotPetStatus);
+        } else {
+          setGotPetStatus(false);
         }
       });
     }
-  }, [props.user]);
+  }, [props.user, gotPetStatus]);
+
+  useEffect(() => {
+    if (!gotPetStatus) {
+      console.log("No Pet");
+      setPetHelperText(
+        "Please add a pet first in your profile page to post a request."
+      );
+    } else {
+      setPetHelperText(null);
+    }
+  }, [gotPetStatus]);
 
   //check for existing pets
   useEffect(() => {
@@ -194,6 +207,8 @@ export function RequestForm(props) {
     <div>
       <ThemeProvider theme={GlobalTheme}>
         <h4> Post your walking request here 🐶</h4>
+        {petHelperText}
+
         <FormControl
           color="primary"
           variant="filled"
@@ -207,6 +222,7 @@ export function RequestForm(props) {
             label="pet"
             value={selectedPet}
             onChange={(e) => setSelectedPet(e.target.value)}
+            disabled={!gotPetStatus}
           >
             {petList.map((pet) => (
               <MenuItem key={pet.key} value={pet.key}>
@@ -224,6 +240,7 @@ export function RequestForm(props) {
               setDate(newDate);
             }}
             renderInput={(params) => <TextField {...params} />}
+            disabled={!gotPetStatus}
           />
         </LocalizationProvider>
         <FormControl color="primary" fullWidth sx={{ margin: "20px 0px" }}>
@@ -234,6 +251,7 @@ export function RequestForm(props) {
             label="time"
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
+            disabled={!gotPetStatus}
           >
             {timeslotList.map((timeslot) => (
               <MenuItem key={timeslot} value={timeslot}>
@@ -246,6 +264,7 @@ export function RequestForm(props) {
           <InputLabel id="Walk Budget">Walk Budget</InputLabel>
           <Input
             required
+            disabled={!gotPetStatus}
             type="number"
             id="budget"
             label="Walk Budget"

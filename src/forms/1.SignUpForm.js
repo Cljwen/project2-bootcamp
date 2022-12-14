@@ -4,7 +4,6 @@ import { auth, database } from "../firebase";
 import { ref, set } from "firebase/database";
 import { USERS } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export function SignUpForm() {
@@ -25,7 +24,7 @@ export function SignUpForm() {
         // https://firebase.google.com/docs/reference/js/firebase.User
         setUserLoggedIn(user);
         setIsFetchingUser(false);
-        navigate("/ProfilePage");
+        navigate("/Requests");
       } else {
         // User is signed out
         return;
@@ -42,7 +41,7 @@ export function SignUpForm() {
         const user = userCredential.user;
         const userListRef = ref(database, `${USERS}/${user.uid}/email`);
         set(userListRef, email);
-        setErrorPopUp("");
+
         // what next?
       })
       .catch((error) => {

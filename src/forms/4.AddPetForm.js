@@ -23,6 +23,7 @@ import { ageList } from "./lists/pet/age";
 import { breedList } from "./lists/pet/breed";
 import { GlobalTheme } from "../pages/styling/Theme";
 import { ThemeProvider } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 // import { useNavigate } from "react-router-dom";
 
@@ -36,7 +37,7 @@ export function AddPetForm(props) {
   const [gender, setGender] = useState("");
   const [petDescription, setPetDescription] = useState("");
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // useEffect(() => {
   //   if (!props.user) {
   //     navigate("/");
@@ -59,17 +60,21 @@ export function AddPetForm(props) {
 
     // Upload file, save file download URL in database with post text
     uploadBytes(fileRef, petDisplayPic).then(() => {
-      getDownloadURL(fileRef).then((downloadUrl) => {
-        const postListRef = ref(database, `${dbPathway}/${petName}`);
-        set(postListRef, {
-          breed: breed,
-          age: age,
-          size: size,
-          gender: gender,
-          petDescription: petDescription,
-          petDisplayPic: downloadUrl,
+      getDownloadURL(fileRef)
+        .then((downloadUrl) => {
+          const postListRef = ref(database, `${dbPathway}/${petName}`);
+          set(postListRef, {
+            breed: breed,
+            age: age,
+            size: size,
+            gender: gender,
+            petDescription: petDescription,
+            petDisplayPic: downloadUrl,
+          });
+        })
+        .then(() => {
+          navigate("/Profile");
         });
-      });
     });
   }
 

@@ -22,6 +22,7 @@ import { storage } from "../firebase";
 import { GlobalTheme } from "../pages/styling/Theme";
 import { ThemeProvider } from "@mui/system";
 import { Input, InputAdornment, FormHelperText } from "@mui/material";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export function ProfileForm() {
   const [name, setName] = useState("");
@@ -32,6 +33,8 @@ export function ProfileForm() {
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
   const [walkerJobPrice, setWalkerJobPrice] = useState("");
+
+  const navigate = useNavigate();
 
   function handleFileChange(e) {
     setDisplayPicValue(e.target.value);
@@ -45,20 +48,24 @@ export function ProfileForm() {
 
     // Upload file, save file download URL in database with post text
     uploadBytes(fileRef, displayPic).then(() => {
-      getDownloadURL(fileRef).then((downloadUrl) => {
-        const postListRef = ref(database, `${dbPathway}/PROFILE`);
-        set(postListRef, {
-          name: name,
-          region: region,
-          displayPic: downloadUrl,
-          description: description,
-          address: address,
-          rates: walkerJobPrice,
-        });
+      getDownloadURL(fileRef)
+        .then((downloadUrl) => {
+          const postListRef = ref(database, `${dbPathway}/PROFILE`);
+          set(postListRef, {
+            name: name,
+            region: region,
+            displayPic: downloadUrl,
+            description: description,
+            address: address,
+            rates: walkerJobPrice,
+          });
 
-        const walkerListRef = ref(database, `${dbPathway}/walker`);
-        set(walkerListRef, walker);
-      });
+          const walkerListRef = ref(database, `${dbPathway}/walker`);
+          set(walkerListRef, walker);
+        })
+        .then(() => {
+          navigate("/Profile");
+        });
     });
   }
 
