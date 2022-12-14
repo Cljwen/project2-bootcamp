@@ -14,10 +14,13 @@ import { Walker } from "./pages/5.WalkerPage";
 import { Schedule } from "./pages/6.Schedule";
 import DrawerAppBar from "./components/DrawerBar";
 import WeatherDisplay from "./components/WeatherCall";
+import { LoginPage } from "./pages/3.LoginPage";
+import { redirect } from "react-router-dom";
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
   const [isFetchingUser, setIsFetchingUser] = useState(false);
+
   useEffect(() => {
     setIsFetchingUser(true);
     onAuthStateChanged(auth, (user) => {
@@ -28,17 +31,17 @@ function App() {
         setIsFetchingUser(false);
       } else {
         // User is signed out
-        return;
+        return redirect("/LoginPage");
       }
     });
   }, []);
 
-  useEffect(() => {
-    if (userLoggedIn) {
-      // console.log(userLoggedIn);
-      // console.log(userLoggedIn.email);
-    }
-  }, [userLoggedIn]);
+  // useEffect(() => {
+  //   if (userLoggedIn) {
+  //     // console.log(userLoggedIn);
+  //     // console.log(userLoggedIn.email);
+  //   }
+  // }, [userLoggedIn]);
 
   return (
     <div className="App">
@@ -51,6 +54,7 @@ function App() {
           </div>
         ) : null}
         <Routes>
+          <Route path="/LoginPage" element={<LoginPage />} />
           <Route
             path="/RequestForm"
             element={<RequestForm user={userLoggedIn} />}

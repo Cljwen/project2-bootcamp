@@ -89,16 +89,23 @@
 
 .Scheduled-page-card-avatar-header-name-placement {
   display: flex;
-  flex: row;
-  align-items: left;
-  justify-content: left;
-  padding-left: 5px;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  /* padding-left: 5px; */
   margin-left: 5px;
   font-size: 14px;
+  max-width: fit-content;
 }
 
 .Scheduled-page-card-address {
   text-align: left;
   overflow-wrap: break-word;
   font-size: 14px;
+}
+
+.Scheduled-page-pet-description {
+  text-align: left;
+  padding: 10px;
 }

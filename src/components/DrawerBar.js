@@ -35,8 +35,10 @@ function DrawerAppBar(props) {
       const profileRef = ref(database, profilePathway);
 
       get(profileRef).then((snapshot) => {
-        setDisplayPicLink(snapshot.val().displayPic);
-        setUserName(snapshot.val().name);
+        if (snapshot.val()) {
+          setDisplayPicLink(snapshot.val().displayPic);
+          setUserName(snapshot.val().name);
+        }
       });
     }
   }, [props.user]);

@@ -212,12 +212,12 @@ export function Schedule(props) {
 
               {acceptedRequests && acceptedRequests.length > 0 ? (
                 <div>
-                  {acceptedRequests.map((request) => {
+                  {acceptedRequests.map((request, index) => {
                     return (
-                      <div key={request.key}>
-                        {request.walkSchedule.map((walkSchedule, index) => {
+                      <div key={index}>
+                        {request.walkSchedule.map((walkSchedule, newIndex) => {
                           return (
-                            <div key={request.key + index}>
+                            <div key={newIndex}>
                               <Card>
                                 <Grid2 container>
                                   <Grid2>
@@ -237,14 +237,17 @@ export function Schedule(props) {
                                         <RequestQuoteIcon />
                                         <div>
                                           {
-                                            request.walkSchedule[index]
+                                            request.walkSchedule[newIndex]
                                               .walkBudget
                                           }
                                           SGD
                                         </div>
                                       </div>
                                       Posted:
-                                      {request.walkSchedule[index].datePosted}
+                                      {
+                                        request.walkSchedule[newIndex]
+                                          .datePosted
+                                      }
                                     </Grid2>
                                   </div>
 
@@ -252,13 +255,16 @@ export function Schedule(props) {
                                     <div className="Card-request-date-time-icon">
                                       <DateRangeIcon />
                                       <div>
-                                        {request.walkSchedule[index].date}
+                                        {request.walkSchedule[newIndex].date}
                                       </div>
                                     </div>
                                     <div className="Card-request-date-time-icon">
                                       <AccessTimeIcon />
                                       <div>
-                                        {request.walkSchedule[index].timeslot}
+                                        {
+                                          request.walkSchedule[newIndex]
+                                            .timeslot
+                                        }
                                       </div>
                                     </div>
                                   </Grid2>
@@ -324,52 +330,51 @@ export function Schedule(props) {
                                     >
                                       <CardContent>
                                         {/* <Typography paragraph></Typography> */}
-                                        <Typography paragraph>
-                                          <div align="left">
-                                            {request.petInfo.petDescription}
-                                          </div>
-                                          <Grid2 container rowSpacing={0}>
-                                            <Grid2>
-                                              <div className="Card-pet-info-icon">
-                                                <ArtTrackOutlinedIcon
-                                                  sx={{ padding: "0px 5px" }}
-                                                />
-                                                Breed: {request.petInfo.breed}
-                                              </div>
-                                            </Grid2>
-                                            <div className="Card-pet-info-icon">
-                                              <CakeOutlinedIcon
-                                                sx={{ padding: "0px 5px" }}
-                                              />
-                                              Age: {request.petInfo.age}
-                                            </div>
-                                            <div className="Card-pet-info-icon">
-                                              <BalanceOutlinedIcon
-                                                sx={{ padding: "0px 5px" }}
-                                              />
-                                              Size: {request.petInfo.size}
-                                            </div>
 
-                                            <div className="Card-pet-info-icon">
-                                              {request.petInfo.gender ===
-                                              "Female" ? (
-                                                <FemaleOutlinedIcon
-                                                  sx={{ padding: "0px 5px" }}
-                                                />
-                                              ) : (
-                                                <MaleOutlinedIcon
-                                                  sx={{ padding: "0px 5px" }}
-                                                />
-                                              )}
-                                              {request.petInfo.gender}
-                                            </div>
-                                          </Grid2>
-                                        </Typography>
+                                        <div className="Scheduled-page-pet-description">
+                                          {request.petInfo.petDescription}
+                                        </div>
+                                        <Grid2 container rowSpacing={0}>
+                                          <div className="Card-pet-info-icon">
+                                            <ArtTrackOutlinedIcon
+                                              sx={{ padding: "0px 5px" }}
+                                            />
+                                            Breed: {request.petInfo.breed}
+                                          </div>
+
+                                          <div className="Card-pet-info-icon">
+                                            <CakeOutlinedIcon
+                                              sx={{ padding: "0px 5px" }}
+                                            />
+                                            Age: {request.petInfo.age}
+                                          </div>
+                                          <div className="Card-pet-info-icon">
+                                            <BalanceOutlinedIcon
+                                              sx={{ padding: "0px 5px" }}
+                                            />
+                                            Size: {request.petInfo.size}
+                                          </div>
+
+                                          <div className="Card-pet-info-icon">
+                                            {request.petInfo.gender ===
+                                            "Female" ? (
+                                              <FemaleOutlinedIcon
+                                                sx={{ padding: "0px 5px" }}
+                                              />
+                                            ) : (
+                                              <MaleOutlinedIcon
+                                                sx={{ padding: "0px 5px" }}
+                                              />
+                                            )}
+                                            {request.petInfo.gender}
+                                          </div>
+                                        </Grid2>
                                       </CardContent>
                                     </Collapse>
                                   </div>
                                 )}
                               </Card>
+                              <br />
                             </div>
                           );
                         })}
@@ -379,14 +384,9 @@ export function Schedule(props) {
                 </div>
               ) : (
                 <div>
-                  <h2>
-                    Hmm. <br />
-                    It looks like you do not have any pending walking requests.
-                  </h2>
                   <p>
-                    tor vitae massa. Fusce luctus vestibulum augue ut aliquet.
-                    Mauris ante ligula, facilisis sed ornare eu, lobortis in
-                    odio. Praesent convallis urna a lacus fermentum
+                    You haven't accepted any yet. <br /> Head over to the
+                    request page to walk a cute doggy.
                   </p>
                 </div>
               )}

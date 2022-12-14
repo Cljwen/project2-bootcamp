@@ -16,7 +16,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ThemeProvider } from "@mui/system";
-import { FormHelperText, Input, InputAdornment } from "@mui/material";
+import {
+  FormHelperText,
+  IconButton,
+  Input,
+  InputAdornment,
+  Snackbar,
+} from "@mui/material";
+import SimpleSnackbar from "../components/SnackBar";
 
 export function RequestForm(props) {
   const [petList, setPetList] = useState([]);
@@ -251,10 +258,11 @@ export function RequestForm(props) {
           />
           <FormHelperText>*Please enter numbers only.</FormHelperText>
         </FormControl>
-
         <Button variant="contained" onClick={(e) => handleSubmit(e)}>
           Post a Request
         </Button>
+
+        {/* {openSnackBar && <Snackbar />} */}
       </ThemeProvider>
     </div>
   );

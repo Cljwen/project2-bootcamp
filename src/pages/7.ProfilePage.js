@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { ref, onChildAdded, get, onValue } from "firebase/database";
 import { USERS } from "../firebase";
-import { database } from "../firebase";
+import { auth, database } from "../firebase";
 import { Avatar, Button, Card, Paper, ThemeProvider } from "@mui/material";
 import "./styling/Profilepage.css";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -14,9 +14,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import "../components/style/DrawerNavBar.css";
 import { GlobalTheme } from "../pages/styling/Theme";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { ProfileForm } from "../forms/3.ProfileForm";
-import { AddPetForm } from "../forms/4.AddPetForm";
+import { signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export function ProfilePage(props) {
   const [petList, setPetList] = useState([]);
@@ -26,18 +28,40 @@ export function ProfilePage(props) {
   const [displayPicLink, setDisplayPicLink] = useState(null);
   const [profileSetupStatus, setProfileSetupStatus] = useState(null);
 
+  const [signOutError, setsignOutError] = useState("");
+  const [userLoggedIn, setUserLoggedIn] = useState(null);
+  const [isFetchingUser, setIsFetchingUser] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsFetchingUser(true);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        setUserLoggedIn(user);
+        setIsFetchingUser(false);
+        navigate("/LoginPage");
+      } else {
+        // User is signed out
+        return;
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (props.user) {
       const dbPathway = `${USERS}/${props.user.uid}/PETS`;
       const petsRef = ref(database, dbPathway);
       const newPetList = [];
 
-      // onChildAdded(petsRef, (data) => {
-      //   newPetList.push({ key: data.key, info: data.val() });
-      //   if (newPetList) {
-      //     setPetList(newPetList);
-      //   }
-      // });
+      onChildAdded(petsRef, (data) => {
+        newPetList.push({ key: data.key, info: data.val() });
+        if (newPetList) {
+          setPetList(newPetList);
+        }
+      });
       const profilePathway = `${USERS}/${props.user.uid}/PROFILE`;
       const profileRef = ref(database, profilePathway);
 
@@ -54,6 +78,17 @@ export function ProfilePage(props) {
       });
     }
   }, [props.user]);
+
+  function handleSignOut() {
+    signOut(auth)
+      .then(() => {
+        return redirect("/LoginPage");
+      })
+      .catch((error) => {
+        // An error happened.
+        setsignOutError(error);
+      });
+  }
 
   return (
     <div>
@@ -197,8 +232,11 @@ export function ProfilePage(props) {
           </ThemeProvider>
         </div>
       )}
+      <ThemeProvider theme={GlobalTheme}>
+        <Button onClick={handleSignOut}>Sign Out</Button>
+      </ThemeProvider>
 
-      <Button>Sign Out</Button>
+      {signOutError && { signOutError }}
     </div>
   );
 }

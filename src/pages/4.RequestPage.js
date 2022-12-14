@@ -6,12 +6,12 @@ import {
   Button,
   CardActions,
   CardContent,
-  CardHeader,
   CardMedia,
   Collapse,
   Divider,
   Grid,
   IconButton,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import { Card } from "@mui/material";
@@ -19,7 +19,6 @@ import { ThemeProvider } from "@mui/material";
 import { GlobalTheme } from "./styling/Theme";
 import "./styling/RequestPage.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Cake, ExpandMore } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import DateRangeIcon from "@mui/icons-material/DateRange";
@@ -32,6 +31,8 @@ import { styled } from "@mui/system";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { RequestForm } from "../forms/5.RequestForm";
 import Rating from "@mui/material/Rating";
+import SimpleSnackbar from "../components/SnackBar";
+import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 
 export function RequestPage(props) {
   const [requestsList, setRequestsList] = useState(null);
@@ -70,18 +71,7 @@ export function RequestPage(props) {
               }
             }
           });
-          // else {
-          //   arrayOfEntries.push({
-          //     key: key,
-          //     owner: snapshot.val()[key].owner,
-          //     pet: snapshot.val()[key].pet.pet,
-          //     petInfo: snapshot.val()[key].pet.selectedPetInfo,
-          //     timeslot: snapshot.val()[key].pet.timeslot,
-          //     index: 0,
-          //   });
-          // }
 
-          console.log(arrayOfEntries);
           setRequestsList(arrayOfEntries);
         } else console.log("no requests exist");
       });
@@ -282,11 +272,16 @@ export function RequestPage(props) {
                       <Button
                         sx={{ margin: "10px 0px" }}
                         variant="contained"
+                        disabled={
+                          props.user.uid === request.owner.userID ? true : false
+                        }
                         onClick={(e) => {
                           handleAcceptRequest(request, request.index);
                         }}
                       >
-                        Accept Request
+                        {props.user.uid === request.owner.userID
+                          ? "Pending Request"
+                          : "Accept Request"}
                       </Button>
                       <CardActions disableSpacing>
                         <Typography sx={{ color: "primary" }}>
@@ -309,11 +304,11 @@ export function RequestPage(props) {
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                           <CardContent>
                             {/* <Typography paragraph></Typography> */}
-                            <Typography paragraph>
-                              <div align="left">
-                                {request.petInfo.petDescription}
-                              </div>
-                            </Typography>
+                            {/* <Typography paragraph> */}
+                            <div align="left">
+                              {request.petInfo.petDescription}
+                            </div>
+                            {/* </Typography> */}
                           </CardContent>
                         </Collapse>
                       )}
