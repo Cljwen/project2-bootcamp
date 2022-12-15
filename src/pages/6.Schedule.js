@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { database } from "../firebase";
-import { onChildAdded, onValue } from "firebase/database";
+import { get, onChildAdded, onValue, set } from "firebase/database";
 import { ref } from "firebase/database";
 import { USERS } from "../firebase";
 import {
@@ -186,7 +186,30 @@ export function Schedule(props) {
                             </div>
 
                             <Grid2 className="Posted-request-posted-status">
-                              {request.timeslot[0].status}
+                              {request.timeslot[0].status === "Pending" ? (
+                                <Typography sx={{ color: "red" }}>
+                                  {request.timeslot[0].status}
+                                </Typography>
+                              ) : (
+                                <Typography sx={{ color: "green" }}>
+                                  {request.timeslot[0].status} By
+                                  <Grid2 container>
+                                    <Avatar
+                                      src={`${request.timeslot[0].walker.walkerAvatarLink}`}
+                                      sx={{ width: 20, height: 20 }}
+                                    />
+                                    <Typography
+                                      sx={{
+                                        color: "black",
+                                        fontSize: "12px",
+                                        margin: "0px 5px",
+                                      }}
+                                    >
+                                      {request.timeslot[0].walker.walkerName}
+                                    </Typography>
+                                  </Grid2>
+                                </Typography>
+                              )}
                             </Grid2>
                           </Grid2>
                         </Card>

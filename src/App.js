@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import { AddPetForm } from "./forms/4.AddPetForm";
-import { ProfileForm } from "./forms/3.ProfileForm";
 import { RequestForm } from "./forms/5.RequestForm";
 import { SignUpForm } from "./forms/1.SignUpForm";
 import { useState, useEffect } from "react";
@@ -15,8 +14,10 @@ import { Schedule } from "./pages/6.Schedule";
 import DrawerAppBar from "./components/DrawerBar";
 import WeatherDisplay from "./components/WeatherCall";
 import { LoginPage } from "./pages/3.LoginPage";
-import { redirect } from "react-router-dom";
 import { set } from "firebase/database";
+import { Homepage } from "./pages/1.Homepage";
+import { SignUpPage } from "./pages/2.SignUpPage";
+import { SupportPage } from "./pages/8.Support";
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(null);
@@ -55,7 +56,8 @@ function App() {
           </div>
         ) : null}
         <Routes>
-          <Route path="/SignUp" element={<SignUpForm user={userLoggedIn} />} />
+          <Route path="/" element={<Homepage user={userLoggedIn} />} />
+          <Route path="/SignUp" element={<SignUpPage user={userLoggedIn} />} />
 
           <Route path="/Login" element={<LoginPage user={userLoggedIn} />} />
           <Route
@@ -79,6 +81,10 @@ function App() {
           <Route
             path="/WeatherCall"
             element={<WeatherDisplay user={userLoggedIn} />}
+          />
+          <Route
+            path="/Support"
+            element={<SupportPage user={userLoggedIn} />}
           />
         </Routes>
       </BrowserRouter>

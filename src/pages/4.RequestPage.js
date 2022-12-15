@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ref, set, onValue } from "firebase/database";
+import { ref, set, onValue, get } from "firebase/database";
 import { USERS, database } from "../firebase";
 import {
   Avatar,
@@ -39,17 +39,43 @@ export function RequestPage(props) {
   const [walkerID, setWalkerID] = useState(null);
   const [requestIndex, setRequestIndex] = useState(null);
 
+  const [walkerName, setWalkerName] = useState("");
+  const [walkerAvatarLink, setwalkerAvatarLink] = useState(null);
+
   const acceptStatus = "Accepted";
 
   useEffect(() => {
-    const allRequests = ref(database, `REQUESTS`);
+    setWalkerID(props.user.uid);
 
     if (props.user) {
-      setWalkerID(props.user.uid);
-      console.log(walkerID);
+      const walkerAvatarImageRef = ref(
+        database,
+        `${USERS}/${props.user.uid}/PROFILE/displayPic`
+      );
+
+      get(walkerAvatarImageRef).then((snapshot) => {
+        console.log(snapshot.val());
+        if (snapshot.val()) {
+          setwalkerAvatarLink(snapshot.val());
+        }
+      });
+
+      const walkerNameRef = ref(
+        database,
+        `${USERS}/${props.user.uid}/PROFILE/name`
+      );
+
+      get(walkerNameRef).then((snapshot) => {
+        console.log(snapshot.val());
+        if (snapshot.val()) {
+          setWalkerName(snapshot.val());
+        }
+      });
+
+      const allRequests = ref(database, `REQUESTS`);
+
       onValue(allRequests, (snapshot) => {
         if (snapshot.val()) {
-          console.log(snapshot.val());
           let arrayOfEntries = [];
           Object.keys(snapshot.val()).forEach(function (key) {
             if (
@@ -87,24 +113,60 @@ export function RequestPage(props) {
     const walkSchedule = request.timeslot;
     const ownerInfo = request.owner;
 
+    // REQUEST FOLDER UPDATE STATUS
     const requestTimeslotRef = ref(
       database,
       `REQUESTS/${requestKey}/pet/timeslot/${indexKey}/status`
     );
-    console.log(indexKey);
+
+    // REMEMBER TO ENABLE THIS //
+    set(requestTimeslotRef, acceptStatus);
+
+    // REQUEST FOLDER UPDATE WALKER THAT ACCEPTED
+    const saveWalkerIDToRequestFolder = ref(
+      database,
+      `REQUESTS/${requestKey}/pet/timeslot/${indexKey}/walker`
+    );
+
+    // REQUEST FOLDER UPDATE WALKER THAT ACCEPTED
+    set(saveWalkerIDToRequestFolder, {
+      walkerID: props.user.uid,
+      walkerName: walkerName,
+      walkerAvatarLink: walkerAvatarLink,
+    });
+
+    // CURRENT USER FOLDER UPDATE STATUS TO DISPLAY ACCEPTED REQUESTS
     const userAcceptedRequestRef = ref(
       database,
       `${USERS}/${props.user.uid}/ACCEPTED_REQUESTS/${requestKey}`
     );
-
-    // REMEMBER TO ENABLE THIS //
-    // set(requestTimeslotRef, acceptStatus);
 
     set(userAcceptedRequestRef, {
       owner: ownerInfo,
       petName: petName,
       petInfo: petInfo,
       walkSchedule: walkSchedule,
+    });
+
+    // OWNER FOLDER UPDATE STATUS TO ACCEPTED
+    const acceptedInOwnerRequestList = ref(
+      database,
+      `${USERS}/${request.owner.userID}/REQUEST_LIST/${petName}/timeslot/${indexKey}/status`
+    );
+
+    //SET ACCEPT IN OWNER REQUEST LIST
+    set(acceptedInOwnerRequestList, acceptStatus);
+
+    // OWNER FOLDER UPDATE TO ADD WALKER ID TO DISPLAY
+    const showWalkerIDInOwnerRequest = ref(
+      database,
+      `${USERS}/${request.owner.userID}/REQUEST_LIST/${petName}/timeslot/${indexKey}/walker`
+    );
+
+    set(showWalkerIDInOwnerRequest, {
+      walkerID: props.user.uid,
+      walkerName: walkerName,
+      walkerAvatarLink: walkerAvatarLink,
     });
   }
 
@@ -195,14 +257,14 @@ export function RequestPage(props) {
                               </div>
                             </div>
                           </Grid2>
-                          <Grid2 xs={4}>
+                          {/* <Grid2 xs={4}>
                             <Rating
                               size="small"
                               name="read-only"
                               value={3}
                               readOnly
                             />
-                          </Grid2>
+                          </Grid2> */}
                         </Grid2>
                       </div>
 

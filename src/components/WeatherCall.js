@@ -19,26 +19,26 @@ export default function WeatherDisplay() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  // axios
-  //   .get(
-  //     `http://api.openweathermap.org/geo/1.0/direct?q=Singapore&limit=1&appid=${API}`
-  //   )
-  //   .then((response) =>
-  //     axios.get(
-  //       `https://api.openweathermap.org/data/2.5/weather?lat=${response.data[0].lat}&lon=${response.data[0].lon}&units=metric&appid=${API}`
-  //     )
-  //   )
-  //   .then((response) => {
-  //     console.log(response);
-  //     setCurrentTemp(response.data.main.temp);
-  //     setCurrentGenericWeather(response.data.weather[0].main);
-  //     setCurrentWeatherDescription(
-  //       capitalizeFirstLetter(response.data.weather[0].description)
-  //     );
-  //     setIconURL(
-  //       `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
-  //     );
-  //   });
+  axios
+    .get(
+      `http://api.openweathermap.org/geo/1.0/direct?q=Singapore&limit=1&appid=${API}`
+    )
+    .then((response) =>
+      axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${response.data[0].lat}&lon=${response.data[0].lon}&units=metric&appid=${API}`
+      )
+    )
+    .then((response) => {
+      console.log(response);
+      setCurrentTemp(response.data.main.temp);
+      setCurrentGenericWeather(response.data.weather[0].main);
+      setCurrentWeatherDescription(
+        capitalizeFirstLetter(response.data.weather[0].description)
+      );
+      setIconURL(
+        `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+      );
+    });
 
   useEffect(() => {
     if (currentGenericWeather) {

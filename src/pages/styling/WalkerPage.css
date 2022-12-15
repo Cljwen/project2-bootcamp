@@ -1,0 +1,12 @@
+.Walker-location-icon {
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 10px;
+}
+
+.Walker-location-icon-region {
+  font-size: 12px;
+  color: dimgray;
+}
