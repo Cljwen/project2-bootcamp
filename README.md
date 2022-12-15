@@ -1,6 +1,7 @@
 # Need A Walk: Project 2: Full-Stack App (Firebase)
 
-https://bc.rocketacademy.co/2-full-stack/2.p-full-stack-app-firebase
+Join our big family of pet owners and dog walkers.
+Your furkids deserve the best. We know that. We're here to help you walk them while you're busy juggling life.
 
 ## Available Scripts
 
